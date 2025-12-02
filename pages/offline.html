@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sin Conexión - Dulcería POS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gradient-to-br from-purple-50 to-pink-50 min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-md w-full">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 text-center">
+            <!-- Icon -->
+            <div class="w-24 h-24 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-wifi-slash text-4xl text-purple-600"></i>
+            </div>
+            
+            <!-- Title -->
+            <h1 class="text-3xl font-bold text-gray-800 mb-4">Sin Conexión</h1>
+            
+            <!-- Message -->
+            <p class="text-gray-600 mb-6">
+                No pudimos conectarnos al servidor. Verifica tu conexión a internet e intenta nuevamente.
+            </p>
+            
+            <!-- Status -->
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+                <div class="flex items-center gap-3">
+                    <i class="fas fa-exclamation-triangle text-yellow-600 text-xl"></i>
+                    <div class="text-left">
+                        <p class="text-sm font-semibold text-yellow-800">Modo Offline</p>
+                        <p class="text-xs text-yellow-700">Algunas funciones pueden no estar disponibles</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Actions -->
+            <div class="space-y-3">
+                <button onclick="window.location.reload()" 
+                    class="w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-pink-700 transition-all flex items-center justify-center gap-2">
+                    <i class="fas fa-sync-alt"></i>
+                    <span>Reintentar</span>
+                </button>
+                
+                <button onclick="window.history.back()" 
+                    class="w-full px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-all flex items-center justify-center gap-2">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Volver</span>
+                </button>
+            </div>
+            
+            <!-- Tips -->
+            <div class="mt-8 pt-6 border-t border-gray-200">
+                <p class="text-sm text-gray-500 mb-3 font-semibold">Soluciones comunes:</p>
+                <ul class="text-xs text-gray-600 space-y-2 text-left">
+                    <li class="flex items-start gap-2">
+                        <i class="fas fa-check text-purple-600 mt-0.5"></i>
+                        <span>Verifica que tu WiFi o datos móviles estén activados</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fas fa-check text-purple-600 mt-0.5"></i>
+                        <span>Intenta activar y desactivar el modo avión</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fas fa-check text-purple-600 mt-0.5"></i>
+                        <span>Verifica que el servidor esté en línea</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="text-center mt-6">
+            <p class="text-sm text-gray-500">
+                <i class="fas fa-candy-cane text-purple-600"></i>
+                Dulcería POS v1.0
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Detectar cuando se recupera la conexión
+        window.addEventListener('online', () => {
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg z-50 flex items-center gap-3';
+            notification.innerHTML = `
+                <i class="fas fa-wifi text-xl"></i>
+                <div>
+                    <p class="font-semibold">Conexión restablecida</p>
+                    <p class="text-sm">Recargando página...</p>
+                </div>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
+        });
+
+        // Actualizar estado de conexión
+        function updateConnectionStatus() {
+            if (navigator.onLine) {
+                window.location.reload();
+            }
+        }
+
+        // Verificar conexión cada 3 segundos
+        setInterval(updateConnectionStatus, 3000);
+    </script>
+</body>
+</html>
