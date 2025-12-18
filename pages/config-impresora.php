@@ -289,7 +289,7 @@ include 'layout.php';
     // Cargar configuración actual
     async function cargarConfiguracion() {
         try {
-            const data = await apiRequest('/Dulcería/api/configuracion.php/impresora');
+            const data = await apiRequest('/DulceriaConejos/api/configuracion.php/impresora');
             
             if (data.success && data.data) {
                 document.getElementById('nombreImpresora').value = data.data.nombre_impresora;
@@ -312,7 +312,7 @@ include 'layout.php';
     async function validarImpresoraEnSegundoPlano(nombre) {
         try {
             const validacion = await apiRequest(
-                `/Dulcería/api/validar-impresora.php?accion=validar&nombre=${encodeURIComponent(nombre)}`
+                `/DulceriaConejos/api/validar-impresora.php?accion=validar&nombre=${encodeURIComponent(nombre)}`
             );
             
             mostrarEstadoImpresora(validacion.conectada, nombre);
@@ -356,7 +356,7 @@ include 'layout.php';
         try {
             showNotification('🔍 Buscando impresoras conectadas...', 'info');
             
-            const data = await apiRequest('/Dulcería/api/validar-impresora.php?accion=listar');
+            const data = await apiRequest('/DulceriaConejos/api/validar-impresora.php?accion=listar');
             
             if (data.success && data.impresoras && data.impresoras.length > 0) {
                 mostrarImpresoras(data.impresoras);
@@ -408,7 +408,7 @@ include 'layout.php';
         showNotification('Validando impresora...', 'info');
         
         const validacion = await apiRequest(
-            `/Dulcería/api/validar-impresora.php?accion=validar&nombre=${encodeURIComponent(nombreImpresora)}`
+            `/DulceriaConejos/api/validar-impresora.php?accion=validar&nombre=${encodeURIComponent(nombreImpresora)}`
         );
         
         if (!validacion.success || !validacion.conectada) {
@@ -423,7 +423,7 @@ include 'layout.php';
         };
         
         try {
-            const data = await apiRequest('/Dulcería/api/configuracion.php/impresora', {
+            const data = await apiRequest('/DulceriaConejos/api/configuracion.php/impresora', {
                 method: 'PUT',
                 body: JSON.stringify(config)
             });
@@ -454,7 +454,7 @@ include 'layout.php';
             showNotification('🔍 Validando conexión...', 'info');
             
             const validacion = await apiRequest(
-                `/Dulcería/api/validar-impresora.php?accion=validar&nombre=${encodeURIComponent(nombreImpresora)}`
+                `/DulceriaConejos/api/validar-impresora.php?accion=validar&nombre=${encodeURIComponent(nombreImpresora)}`
             );
             
             if (!validacion.success || !validacion.conectada) {
@@ -470,7 +470,7 @@ include 'layout.php';
             showNotification('🖨️ Impresora conectada. Enviando ticket de prueba...', 'info');
             mostrarEstadoImpresora(true, nombreImpresora);
             
-            const data = await apiRequest('/Dulcería/api/imprimir-termica.php', {
+            const data = await apiRequest('/DulceriaConejos/api/imprimir-termica.php', {
                 method: 'POST',
                 body: JSON.stringify({
                     tipo: 'prueba',

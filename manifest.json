@@ -2,8 +2,8 @@
   "name": "Dulcería POS",
   "short_name": "Dulcería",
   "description": "Sistema de Punto de Venta para Dulcería - Gestión de inventario, ventas y reportes",
-  "start_url": "/Dulcería/pages/dashboard.php",
-  "scope": "/Dulcería/",
+  "start_url": "/DulceriaConejos/pages/dashboard.php",
+  "scope": "/DulceriaConejos/",
   "display": "standalone",
   "background_color": "#9333EA",
   "theme_color": "#9333EA",
@@ -13,49 +13,49 @@
   "dir": "ltr",
   "icons": [
     {
-      "src": "/Dulcería/icons/icon-72x72.png",
+      "src": "/DulceriaConejos/icons/icon-72x72.png",
       "sizes": "72x72",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/Dulcería/icons/icon-96x96.png",
+      "src": "/DulceriaConejos/icons/icon-96x96.png",
       "sizes": "96x96",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/Dulcería/icons/icon-128x128.png",
+      "src": "/DulceriaConejos/icons/icon-128x128.png",
       "sizes": "128x128",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/Dulcería/icons/icon-144x144.png",
+      "src": "/DulceriaConejos/icons/icon-144x144.png",
       "sizes": "144x144",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/Dulcería/icons/icon-152x152.png",
+      "src": "/DulceriaConejos/icons/icon-152x152.png",
       "sizes": "152x152",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/Dulcería/icons/icon-192x192.png",
+      "src": "/DulceriaConejos/icons/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/Dulcería/icons/icon-384x384.png",
+      "src": "/DulceriaConejos/icons/icon-384x384.png",
       "sizes": "384x384",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/Dulcería/icons/icon-512x512.png",
+      "src": "/DulceriaConejos/icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
@@ -63,13 +63,13 @@
   ],
   "screenshots": [
     {
-      "src": "/Dulcería/screenshots/pos.png",
+      "src": "/DulceriaConejos/screenshots/pos.png",
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide"
     },
     {
-      "src": "/Dulcería/screenshots/dashboard.png",
+      "src": "/DulceriaConejos/screenshots/dashboard.png",
       "sizes": "750x1334",
       "type": "image/png",
       "form_factor": "narrow"
@@ -80,10 +80,10 @@
       "name": "Punto de Venta",
       "short_name": "POS",
       "description": "Ir al Punto de Venta",
-      "url": "/Dulcería/pages/pos.php",
+      "url": "/DulceriaConejos/pages/pos.php",
       "icons": [
         {
-          "src": "/Dulcería/icons/shortcut-pos.png",
+          "src": "/DulceriaConejos/icons/shortcut-pos.png",
           "sizes": "96x96"
         }
       ]
@@ -92,10 +92,10 @@
       "name": "Inventario",
       "short_name": "Inventario",
       "description": "Ver inventario de productos",
-      "url": "/Dulcería/pages/inventario.php",
+      "url": "/DulceriaConejos/pages/inventario.php",
       "icons": [
         {
-          "src": "/Dulcería/icons/shortcut-inventory.png",
+          "src": "/DulceriaConejos/icons/shortcut-inventory.png",
           "sizes": "96x96"
         }
       ]
@@ -104,10 +104,10 @@
       "name": "Reportes",
       "short_name": "Reportes",
       "description": "Ver reportes del sistema",
-      "url": "/Dulcería/pages/reportes.php",
+      "url": "/DulceriaConejos/pages/reportes.php",
       "icons": [
         {
-          "src": "/Dulcería/icons/shortcut-reports.png",
+          "src": "/DulceriaConejos/icons/shortcut-reports.png",
           "sizes": "96x96"
         }
       ]
@@ -116,7 +116,7 @@
   "related_applications": [],
   "prefer_related_applications": false,
   "share_target": {
-    "action": "/Dulcería/pages/pos.php",
+    "action": "/DulceriaConejos/pages/pos.php",
     "method": "GET",
     "params": {
       "title": "product",

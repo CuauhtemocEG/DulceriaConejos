@@ -37,7 +37,7 @@ ob_start();
                         <td colspan="7" class="px-4 py-10 text-center text-gray-400">
                             <div class="logo-spinner-container">
                                 <div class="relative">
-                                    <img src="/Dulcería/public/img/DulceriaConejos.png" alt="Cargando" class="logo-spinner h-12 w-12 object-contain">
+                                    <img src="/DulceriaConejos/public/img/DulceriaConejos.png" alt="Cargando" class="logo-spinner h-12 w-12 object-contain">
                                 </div>
                                 <p class="mt-2">Cargando usuarios...</p>
                             </div>
@@ -135,7 +135,7 @@ include 'layout.php';
     async function cargarDatos() {
         try {
             // Cargar roles
-            const rolesData = await apiRequest('/Dulcería/api/usuarios.php/roles');
+            const rolesData = await apiRequest('/DulceriaConejos/api/usuarios.php/roles');
             if (rolesData.success) {
                 roles = rolesData.data;
                 const select = document.getElementById('rol');
@@ -158,7 +158,7 @@ include 'layout.php';
     
     async function cargarUsuarios() {
         try {
-            const data = await apiRequest('/Dulcería/api/usuarios.php');
+            const data = await apiRequest('/DulceriaConejos/api/usuarios.php');
             if (data.success) {
                 usuarios = data.data;
                 mostrarUsuarios(usuarios);
@@ -330,7 +330,7 @@ include 'layout.php';
         }
         
         try {
-            let url = '/Dulcería/api/usuarios.php';
+            let url = '/DulceriaConejos/api/usuarios.php';
             let method = 'POST';
             
             if (esEdicion) {
@@ -364,7 +364,7 @@ include 'layout.php';
         }
         
         try {
-            const data = await apiRequest(`/Dulcería/api/usuarios.php/${id}`, {
+            const data = await apiRequest(`/DulceriaConejos/api/usuarios.php/${id}`, {
                 method: 'DELETE'
             });
             
@@ -389,7 +389,7 @@ include 'layout.php';
         }
         
         try {
-            const data = await apiRequest(`/Dulcería/api/usuarios.php/${id}/logout`, {
+            const data = await apiRequest(`/DulceriaConejos/api/usuarios.php/${id}/logout`, {
                 method: 'POST'
             });
             

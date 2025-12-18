@@ -59,7 +59,7 @@ try {
     redimensionarImagen($uploadPath, 800, 800);
     
     // Retornar URL relativa
-    $imageUrl = '/Dulcería/public/img/productos/' . $fileName;
+    $imageUrl = '/DulceriaConejos/public/img/productos/' . $fileName;
     
     Response::success([
         'imagen_url' => $imageUrl,

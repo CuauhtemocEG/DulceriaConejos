@@ -99,7 +99,7 @@ ob_start();
                         <td colspan="6" class="px-4 py-10 text-center text-gray-400">
                             <div class="logo-spinner-container">
                                 <div class="relative">
-                                    <img src="/Dulcería/public/img/DulceriaConejos.png" alt="Cargando" class="logo-spinner h-12 w-12 object-contain">
+                                    <img src="/DulceriaConejos/public/img/DulceriaConejos.png" alt="Cargando" class="logo-spinner h-12 w-12 object-contain">
                                 </div>
                                 <p class="mt-2">Cargando inventario...</p>
                             </div>
@@ -128,7 +128,7 @@ ob_start();
             <div id="contenidoHistorial" class="space-y-3">
                 <div class="logo-spinner-container py-10">
                     <div class="relative">
-                        <img src="/Dulcería/public/img/DulceriaConejos.png" alt="Cargando" class="logo-spinner h-12 w-12 object-contain mx-auto">
+                        <img src="/DulceriaConejos/public/img/DulceriaConejos.png" alt="Cargando" class="logo-spinner h-12 w-12 object-contain mx-auto">
                     </div>
                     <p class="text-gray-600 mt-2">Cargando historial...</p>
                 </div>
@@ -206,7 +206,7 @@ include 'layout.php';
     async function cargarDatos() {
         try {
             // Cargar categorías
-            const catData = await apiRequest('/Dulcería/api/categorias.php');
+            const catData = await apiRequest('/DulceriaConejos/api/categorias.php');
             if (catData.success) {
                 categorias = catData.data;
                 const select = document.getElementById('filtroCategoria');
@@ -229,7 +229,7 @@ include 'layout.php';
     
     async function cargarInventario() {
         try {
-            const data = await apiRequest('/Dulcería/api/productos.php');
+            const data = await apiRequest('/DulceriaConejos/api/productos.php');
             if (data.success) {
                 productos = data.data;
                 actualizarEstadisticas();
@@ -371,14 +371,14 @@ include 'layout.php';
         document.getElementById('contenidoHistorial').innerHTML = `
             <div class="logo-spinner-container py-10">
                 <div class="relative">
-                    <img src="/Dulcería/public/img/DulceriaConejos.png" alt="Cargando" class="logo-spinner h-12 w-12 object-contain mx-auto">
+                    <img src="/DulceriaConejos/public/img/DulceriaConejos.png" alt="Cargando" class="logo-spinner h-12 w-12 object-contain mx-auto">
                 </div>
                 <p class="text-gray-600 mt-2">Cargando historial...</p>
             </div>
         `;
         
         try {
-            const data = await apiRequest(`/Dulcería/api/productos.php/${idProducto}/historial`);
+            const data = await apiRequest(`/DulceriaConejos/api/productos.php/${idProducto}/historial`);
             
             if (data.success && data.data.length > 0) {
                 let html = '<div class="space-y-3">';
@@ -517,7 +517,7 @@ include 'layout.php';
         };
         
         try {
-            const data = await apiRequest('/Dulcería/api/productos.php/movimiento-inventario', {
+            const data = await apiRequest('/DulceriaConejos/api/productos.php/movimiento-inventario', {
                 method: 'POST',
                 body: JSON.stringify(movimiento)
             });

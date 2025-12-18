@@ -45,7 +45,7 @@ ob_start();
                         <td colspan="6" class="px-4 py-10 text-center text-gray-400">
                             <div class="logo-spinner-container">
                                 <div class="relative">
-                                    <img src="/Dulcería/public/img/DulceriaConejos.png" alt="Cargando" class="logo-spinner h-12 w-12 object-contain">
+                                    <img src="/DulceriaConejos/public/img/DulceriaConejos.png" alt="Cargando" class="logo-spinner h-12 w-12 object-contain">
                                 </div>
                                 <p class="mt-2">Cargando ventas...</p>
                             </div>
@@ -85,7 +85,7 @@ include 'layout.php';
     
     async function cargarVentas() {
         try {
-            const data = await apiRequest('/Dulcería/api/pos.php/ventas');
+            const data = await apiRequest('/DulceriaConejos/api/pos.php/ventas');
             if (data.success) {
                 ventas = data.data;
                 aplicarFiltros();
@@ -176,7 +176,7 @@ include 'layout.php';
     
     async function verDetalle(idVenta) {
         try {
-            const data = await apiRequest(`/Dulcería/api/pos.php/venta/${idVenta}`);
+            const data = await apiRequest(`/DulceriaConejos/api/pos.php/venta/${idVenta}`);
             if (data.success) {
                 const venta = data.data;
                 
@@ -221,7 +221,7 @@ include 'layout.php';
                                     <p class="text-xs text-gray-500">Disponible para descarga</p>
                                 </div>
                             </div>
-                            <a href="/Dulcería/${venta.pdf_ticket}" target="_blank" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium">
+                            <a href="/DulceriaConejos/${venta.pdf_ticket}" target="_blank" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium">
                                 Ver PDF
                             </a>
                         </div>
@@ -285,7 +285,7 @@ include 'layout.php';
     
     async function imprimirTicket(idVenta) {
         try {
-            const data = await apiRequest(`/Dulcería/api/tickets.php/${idVenta}`);
+            const data = await apiRequest(`/DulceriaConejos/api/tickets.php/${idVenta}`);
             if (data.success) {
                 const ventana = window.open('', '_blank');
                 ventana.document.write(data.data.ticket_html);
@@ -303,7 +303,7 @@ include 'layout.php';
             showNotification('Enviando a impresora térmica...', 'info');
             
             // Obtener configuración de impresora
-            const configData = await apiRequest('/Dulcería/api/configuracion.php/impresora');
+            const configData = await apiRequest('/DulceriaConejos/api/configuracion.php/impresora');
             
             if (!configData.success || !configData.data.habilitada) {
                 showNotification('Impresora térmica no configurada o deshabilitada', 'warning');
@@ -313,7 +313,7 @@ include 'layout.php';
             const config = configData.data;
             
             // Llamar API de impresión térmica
-            const data = await apiRequest('/Dulcería/api/imprimir-termica.php', {
+            const data = await apiRequest('/DulceriaConejos/api/imprimir-termica.php', {
                 method: 'POST',
                 body: JSON.stringify({
                     tipo: 'ticket',
@@ -345,7 +345,7 @@ include 'layout.php';
         }
         
         try {
-            const data = await apiRequest(`/Dulcería/api/pos.php/${idVenta}/cancelar`, {
+            const data = await apiRequest(`/DulceriaConejos/api/pos.php/${idVenta}/cancelar`, {
                 method: 'POST',
                 body: JSON.stringify({ motivo: motivo })
             });

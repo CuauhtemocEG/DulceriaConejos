@@ -77,7 +77,7 @@ ob_start();
                         <td colspan="5" class="px-6 py-12 text-center text-gray-500">
                             <div class="logo-spinner-container">
                                 <div class="relative">
-                                    <img src="/Dulcería/public/img/DulceriaConejos.png" alt="Cargando" class="logo-spinner h-12 w-12 object-contain">
+                                    <img src="/DulceriaConejos/public/img/DulceriaConejos.png" alt="Cargando" class="logo-spinner h-12 w-12 object-contain">
                                 </div>
                                 <p class="text-lg font-semibold mt-2">Cargando roles...</p>
                             </div>
@@ -190,7 +190,7 @@ ob_start();
             
             // Cargar roles
             console.log('📡 Llamando a API de roles...');
-            const rolesData = await apiRequest('/Dulcería/api/roles.php');
+            const rolesData = await apiRequest('/DulceriaConejos/api/roles.php');
             console.log('📦 Respuesta roles:', rolesData);
             
             if (rolesData.success) {
@@ -204,7 +204,7 @@ ob_start();
             
             // Cargar módulos disponibles
             console.log('📡 Llamando a API de módulos...');
-            const modulosData = await apiRequest('/Dulcería/api/roles.php/modulos');
+            const modulosData = await apiRequest('/DulceriaConejos/api/roles.php/modulos');
             console.log('📦 Respuesta módulos:', modulosData);
             
             if (modulosData.success) {
@@ -498,8 +498,8 @@ ob_start();
         
         try {
             const url = rolId 
-                ? `/Dulcería/api/roles.php/${rolId}`
-                : '/Dulcería/api/roles.php';
+                ? `/DulceriaConejos/api/roles.php/${rolId}`
+                : '/DulceriaConejos/api/roles.php';
             
             const method = rolId ? 'PUT' : 'POST';
             
@@ -528,7 +528,7 @@ ob_start();
         }
         
         try {
-            const response = await apiRequest(`/Dulcería/api/roles.php/${id}`, {
+            const response = await apiRequest(`/DulceriaConejos/api/roles.php/${id}`, {
                 method: 'DELETE'
             });
             
@@ -548,9 +548,9 @@ ob_start();
     async function verUsuariosRol(rolId, nombreRol) {
         try {
             // Obtener usuarios del rol
-            const responseUsuarios = await apiRequest(`/Dulcería/api/roles.php/${rolId}/usuarios`);
+            const responseUsuarios = await apiRequest(`/DulceriaConejos/api/roles.php/${rolId}/usuarios`);
             // Obtener todos los roles para el selector
-            const responseRoles = await apiRequest('/Dulcería/api/roles.php');
+            const responseRoles = await apiRequest('/DulceriaConejos/api/roles.php');
             
             if (!responseUsuarios.success || !responseRoles.success) {
                 showNotification('Error al cargar usuarios', 'error');
@@ -666,7 +666,7 @@ ob_start();
         }
         
         try {
-            const response = await apiRequest(`/Dulcería/api/usuarios.php/${usuarioId}`, {
+            const response = await apiRequest(`/DulceriaConejos/api/usuarios.php/${usuarioId}`, {
                 method: 'PUT',
                 body: JSON.stringify({ rol_id: nuevoRolId })
             });

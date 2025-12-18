@@ -10,9 +10,9 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#9333EA">
     
-    <link rel="manifest" href="/Dulcería/manifest.json">
-    <link rel="icon" type="image/png" href="/Dulcería/icons/icon-192x192.png">
-    <link rel="apple-touch-icon" href="/Dulcería/icons/apple-touch-icon.png">
+    <link rel="manifest" href="/DulceriaConejos/manifest.json">
+    <link rel="icon" type="image/png" href="/DulceriaConejos/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="/DulceriaConejos/icons/apple-touch-icon.png">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -99,7 +99,7 @@
         <!-- Logo y título -->
         <div class="text-center mb-8">
             <div class="inline-flex items-center justify-center w-32 h-32 bg-white rounded-3xl shadow-2xl mb-6 logo-bounce p-4">
-                <img src="/Dulcería/public/img/DulceriaConejos.png" alt="Dulcería Conejos" class="w-full h-full object-contain">
+                <img src="/DulceriaConejos/public/img/DulceriaConejos.png" alt="Dulcería Conejos" class="w-full h-full object-contain">
             </div>
             <h1 class="text-5xl font-black text-white mb-3 drop-shadow-lg">Dulcería Conejos</h1>
             <p class="text-purple-100 text-lg font-medium flex items-center justify-center gap-2">
@@ -171,12 +171,12 @@
             loginBtn.disabled = true;
             loginBtn.classList.add('opacity-75', 'cursor-not-allowed');
             loginBtnText.innerHTML = `
-                <img src="/Dulcería/public/img/DulceriaConejos.png" alt="Cargando" class="logo-spinner h-6 w-6 object-contain inline-block">
+                <img src="/DulceriaConejos/public/img/DulceriaConejos.png" alt="Cargando" class="logo-spinner h-6 w-6 object-contain inline-block">
                 <span>Iniciando sesión...</span>
             `;
             
             try {
-                const response = await fetch('/Dulcería/api/auth.php/login', {
+                const response = await fetch('/DulceriaConejos/api/auth.php/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -208,7 +208,7 @@
                     
                     // Redirigir al POS después de un breve delay
                     setTimeout(() => {
-                        window.location.href = '/Dulcería/pages/pos.php';
+                        window.location.href = '/DulceriaConejos/pages/pos.php';
                     }, 800);
                 } else {
                     // Mostrar error
@@ -242,7 +242,7 @@
         const token = localStorage.getItem('token');
         if (token) {
             // Verificar si el token es válido
-            fetch('/Dulcería/api/auth.php/me', {
+            fetch('/DulceriaConejos/api/auth.php/me', {
                 headers: {
                     'Authorization': 'Bearer ' + token
                 }
@@ -251,7 +251,7 @@
             .then(data => {
                 if (data.success) {
                     // Ya hay sesión activa, redirigir al POS
-                    window.location.href = '/Dulcería/pages/pos.php';
+                    window.location.href = '/DulceriaConejos/pages/pos.php';
                 }
             })
             .catch(() => {

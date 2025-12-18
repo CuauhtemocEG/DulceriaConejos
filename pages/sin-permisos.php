@@ -146,7 +146,7 @@
                         <i class="fas fa-arrow-left"></i>
                         <span>Volver Atrás</span>
                     </button>
-                    <a href="/Dulcería/pages/dashboard.php" 
+                    <a href="/DulceriaConejos/pages/dashboard.php" 
                         class="flex-1 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg flex items-center justify-center gap-2 font-semibold">
                         <i class="fas fa-home"></i>
                         <span>Ir al Inicio</span>
@@ -178,7 +178,7 @@
         
         // Si no hay usuario en localStorage, redirigir al login
         if (!user.id_usuario) {
-            window.location.href = '/Dulcería/pages/login.php';
+            window.location.href = '/DulceriaConejos/pages/login.php';
         }
     </script>
 </body>

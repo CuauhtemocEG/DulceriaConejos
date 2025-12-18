@@ -4,27 +4,27 @@
  */
 
 const CACHE_NAME = 'dulceria-pos-v1.0.0';
-const OFFLINE_URL = '/Dulcería/pages/offline.html';
+const OFFLINE_URL = '/DulceriaConejos/pages/offline.html';
 
 // Archivos esenciales para cachear
 const ESSENTIAL_FILES = [
-    '/Dulcería/pages/offline.html',
-    '/Dulcería/public/img/DulceriaConejos.png',
-    '/Dulcería/manifest.json'
+    '/DulceriaConejos/pages/offline.html',
+    '/DulceriaConejos/public/img/DulceriaConejos.png',
+    '/DulceriaConejos/manifest.json'
 ];
 
 // Archivos de la aplicación para cachear
 const APP_FILES = [
-    '/Dulcería/pages/dashboard.php',
-    '/Dulcería/pages/layout.php',
-    '/Dulcería/pages/pos.php',
-    '/Dulcería/pages/ventas.php',
-    '/Dulcería/pages/productos.php',
-    '/Dulcería/pages/inventario.php',
-    '/Dulcería/pages/usuarios.php',
-    '/Dulcería/pages/roles.php',
-    '/Dulcería/pages/reportes.php',
-    '/Dulcería/pages/configuracion.php'
+    '/DulceriaConejos/pages/dashboard.php',
+    '/DulceriaConejos/pages/layout.php',
+    '/DulceriaConejos/pages/pos.php',
+    '/DulceriaConejos/pages/ventas.php',
+    '/DulceriaConejos/pages/productos.php',
+    '/DulceriaConejos/pages/inventario.php',
+    '/DulceriaConejos/pages/usuarios.php',
+    '/DulceriaConejos/pages/roles.php',
+    '/DulceriaConejos/pages/reportes.php',
+    '/DulceriaConejos/pages/configuracion.php'
 ];
 
 // Instalación del Service Worker
@@ -138,8 +138,8 @@ self.addEventListener('push', (event) => {
     const title = data.title || 'Dulcería POS';
     const options = {
         body: data.body || 'Nueva notificación',
-        icon: '/Dulcería/icons/icon-192x192.png',
-        badge: '/Dulcería/icons/icon-72x72.png',
+        icon: '/DulceriaConejos/icons/icon-192x192.png',
+        badge: '/DulceriaConejos/icons/icon-72x72.png',
         vibrate: [200, 100, 200],
         data: data.data || {}
     };
@@ -154,6 +154,6 @@ self.addEventListener('notificationclick', (event) => {
     event.notification.close();
     
     event.waitUntil(
-        clients.openWindow('/Dulcería/pages/dashboard.php')
+        clients.openWindow('/DulceriaConejos/pages/dashboard.php')
     );
 });

@@ -198,7 +198,7 @@ include 'layout.php';
             const periodo = document.getElementById('periodoVentas').value;
             const fecha = document.getElementById('fechaVentas').value;
             
-            const data = await apiRequest(`/Dulcería/api/reportes.php/ventas?periodo=${periodo}&fecha=${fecha}`);
+            const data = await apiRequest(`/DulceriaConejos/api/reportes.php/ventas?periodo=${periodo}&fecha=${fecha}`);
             
             if (data.success) {
                 const resumen = data.data.resumen;
@@ -288,7 +288,7 @@ include 'layout.php';
             const limite = document.getElementById('limiteProductos').value;
             
             const endpoint = tipo === 'top' ? 'productos-top' : 'productos-menos-vendidos';
-            const data = await apiRequest(`/Dulcería/api/reportes.php/${endpoint}?limite=${limite}`);
+            const data = await apiRequest(`/DulceriaConejos/api/reportes.php/${endpoint}?limite=${limite}`);
             
             if (data.success) {
                 const productos = data.data;
@@ -361,7 +361,7 @@ include 'layout.php';
     
     async function cargarReporteInventario() {
         try {
-            const data = await apiRequest('/Dulcería/api/reportes.php/stock-bajo');
+            const data = await apiRequest('/DulceriaConejos/api/reportes.php/stock-bajo');
             
             if (data.success) {
                 const productos = data.data;
@@ -468,13 +468,13 @@ include 'layout.php';
             document.getElementById('resultadoCorte').innerHTML = `
                 <div class="logo-spinner-container py-12">
                     <div class="relative">
-                        <img src="/Dulcería/public/img/DulceriaConejos.png" alt="Cargando" class="logo-spinner h-16 w-16 object-contain mx-auto">
+                        <img src="/DulceriaConejos/public/img/DulceriaConejos.png" alt="Cargando" class="logo-spinner h-16 w-16 object-contain mx-auto">
                     </div>
                     <p class="text-gray-600 text-lg mt-4">Generando corte de caja...</p>
                 </div>
             `;
             
-            const data = await apiRequest(`/Dulcería/api/reportes.php/corte-caja?fecha_inicio=${fechaInicio}&fecha_fin=${fechaFin}`);
+            const data = await apiRequest(`/DulceriaConejos/api/reportes.php/corte-caja?fecha_inicio=${fechaInicio}&fecha_fin=${fechaFin}`);
             
             console.log('Respuesta del servidor:', data);
             
@@ -752,7 +752,7 @@ include 'layout.php';
             // Crear formulario temporal para enviar con POST (mantiene la sesión)
             const form = document.createElement('form');
             form.method = 'POST';
-            form.action = '/Dulcería/api/generar-pdf-corte.php';
+            form.action = '/DulceriaConejos/api/generar-pdf-corte.php';
             form.target = '_blank';
             
             // Agregar campos ocultos
@@ -795,7 +795,7 @@ include 'layout.php';
             const fechaInicio = document.getElementById('fechaInicioCorte').value;
             const fechaFin = document.getElementById('fechaFinCorte').value;
             
-            const data = await apiRequest('/Dulcería/api/reportes.php/guardar-corte', {
+            const data = await apiRequest('/DulceriaConejos/api/reportes.php/guardar-corte', {
                 method: 'POST',
                 body: JSON.stringify({
                     fecha_inicio: fechaInicio,

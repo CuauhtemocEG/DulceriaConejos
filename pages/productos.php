@@ -58,7 +58,7 @@ ob_start();
                         <td colspan="9" class="px-4 py-10 text-center text-gray-400">
                             <div class="logo-spinner-container">
                                 <div class="relative">
-                                    <img src="/Dulcería/public/img/DulceriaConejos.png" alt="Cargando" class="logo-spinner h-12 w-12 object-contain">
+                                    <img src="/DulceriaConejos/public/img/DulceriaConejos.png" alt="Cargando" class="logo-spinner h-12 w-12 object-contain">
                                 </div>
                                 <p class="mt-2">Cargando productos...</p>
                             </div>
@@ -279,7 +279,7 @@ ob_start();
                             <!-- Preview de imagen -->
                             <div class="mb-4">
                                 <div class="relative mx-auto" style="width: 200px; height: 200px;">
-                                    <img id="previewImagen" src="/Dulcería/public/img/productos/default.png" 
+                                    <img id="previewImagen" src="/DulceriaConejos/public/img/productos/default.png" 
                                         alt="Preview" class="w-full h-full object-cover rounded-xl border-4 border-white shadow-lg">
                                     <div class="absolute -top-3 -right-3 bg-gradient-to-br from-purple-600 to-pink-600 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg">
                                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -581,7 +581,7 @@ include 'layout.php';
     async function cargarDatos() {
         try {
             // Cargar categorías
-            const catData = await apiRequest('/Dulcería/api/categorias.php');
+            const catData = await apiRequest('/DulceriaConejos/api/categorias.php');
             if (catData.success) {
                 categorias = catData.data;
                 
@@ -602,7 +602,7 @@ include 'layout.php';
             }
             
             // Cargar temporadas
-            const tempData = await apiRequest('/Dulcería/api/temporadas.php');
+            const tempData = await apiRequest('/DulceriaConejos/api/temporadas.php');
             if (tempData.success) {
                 temporadas = tempData.data;
                 
@@ -626,7 +626,7 @@ include 'layout.php';
     
     async function cargarProductos() {
         try {
-            const data = await apiRequest('/Dulcería/api/productos.php');
+            const data = await apiRequest('/DulceriaConejos/api/productos.php');
             if (data.success) {
                 productos = data.data;
                 aplicarFiltros();
@@ -716,14 +716,14 @@ include 'layout.php';
             const stockClass = p.stock_actual <= p.stock_minimo ? 'text-red-600' : 'text-gray-900';
             
             // Obtener URL de imagen
-            const imagenUrl = p.imagen_url || '/Dulcería/public/img/productos/default.png';
+            const imagenUrl = p.imagen_url || '/DulceriaConejos/public/img/productos/default.png';
             
             html += `
                 <tr class="hover:bg-gray-50">
                     <td class="px-4 py-3">
                         <img src="${imagenUrl}" alt="${p.nombre}" 
                             class="w-12 h-12 object-cover rounded-lg border-2 border-gray-200"
-                            onerror="this.src='/Dulcería/public/img/productos/default.png'">
+                            onerror="this.src='/DulceriaConejos/public/img/productos/default.png'">
                     </td>
                     <td class="px-4 py-3">
                         <div class="text-sm font-medium text-gray-900">${p.nombre}</div>
@@ -769,7 +769,7 @@ include 'layout.php';
         document.getElementById('idProducto').value = '';
         
         // Resetear preview de imagen
-        document.getElementById('previewImagen').src = '/Dulcería/public/img/productos/default.png';
+        document.getElementById('previewImagen').src = '/DulceriaConejos/public/img/productos/default.png';
         document.getElementById('imagenUrl').value = '';
         
         // Cargar márgenes predeterminados de granel desde localStorage
@@ -800,7 +800,7 @@ include 'layout.php';
         document.getElementById('descripcion').value = producto.descripcion || '';
         
         // Cargar imagen del producto
-        const imagenUrl = producto.imagen_url || '/Dulcería/public/img/productos/default.png';
+        const imagenUrl = producto.imagen_url || '/DulceriaConejos/public/img/productos/default.png';
         document.getElementById('previewImagen').src = imagenUrl;
         document.getElementById('imagenUrl').value = imagenUrl;
         
@@ -919,7 +919,7 @@ include 'layout.php';
     
     async function mostrarFleje(productoId) {
         try {
-            const data = await apiRequest(`/Dulcería/api/productos.php/${productoId}`);
+            const data = await apiRequest(`/DulceriaConejos/api/productos.php/${productoId}`);
             if (data.success) {
                 const producto = data.data;
                 document.getElementById('tituloFleje').textContent = `Fleje: ${producto.nombre}`;
@@ -931,9 +931,9 @@ include 'layout.php';
                     html += `
                         <div class="border-3 border-black bg-white p-4" style="max-width: 900px; margin: 0 auto;">
                             <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 12px; border-bottom: 3px solid #9ca3af; margin-bottom: 12px;">
-                                <img src="/Dulcería/public/img/DulceriaConejos.png" alt="Logo" style="width: 100px; height: 100px; object-fit: contain; flex-shrink: 0;">
+                                <img src="/DulceriaConejos/public/img/DulceriaConejos.png" alt="Logo" style="width: 100px; height: 100px; object-fit: contain; flex-shrink: 0;">
                                 <h2 class="text-3xl font-bold text-center text-gray-900" style="flex: 1; margin: 0;">${producto.nombre}</h2>
-                                <img src="/Dulcería/public/img/DulceriaConejos.png" alt="Logo" style="width: 100px; height: 100px; object-fit: contain; flex-shrink: 0;">
+                                <img src="/DulceriaConejos/public/img/DulceriaConejos.png" alt="Logo" style="width: 100px; height: 100px; object-fit: contain; flex-shrink: 0;">
                             </div>
                             <table class="w-full border-collapse" style="table-layout: fixed;">
                                 <thead>
@@ -1155,14 +1155,14 @@ include 'layout.php';
         
         try {
             // 1. Subir imagen si se seleccionó una nueva
-            let imagenUrl = document.getElementById('imagenUrl').value || '/Dulcería/public/img/productos/default.png';
+            let imagenUrl = document.getElementById('imagenUrl').value || '/DulceriaConejos/public/img/productos/default.png';
             const fileInput = document.getElementById('imagenProducto');
             
             if (fileInput.files && fileInput.files[0]) {
                 const formData = new FormData();
                 formData.append('imagen', fileInput.files[0]);
                 
-                const uploadResponse = await fetch('/Dulcería/api/upload.php', {
+                const uploadResponse = await fetch('/DulceriaConejos/api/upload.php', {
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -1213,7 +1213,7 @@ include 'layout.php';
             }
             
             // 3. Guardar producto
-            let url = '/Dulcería/api/productos.php';
+            let url = '/DulceriaConejos/api/productos.php';
             let method = 'POST';
             
             if (esEdicion) {
@@ -1247,7 +1247,7 @@ include 'layout.php';
         }
         
         try {
-            const data = await apiRequest(`/Dulcería/api/productos.php/${id}`, {
+            const data = await apiRequest(`/DulceriaConejos/api/productos.php/${id}`, {
                 method: 'DELETE'
             });
             

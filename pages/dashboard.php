@@ -36,7 +36,7 @@ ob_start();
         <h3 class="text-lg font-semibold text-gray-800 mb-4">📈 Productos Más Vendidos</h3>
         <div id="productosTop" class="overflow-x-auto">
             <div class="flex items-center justify-center h-40">
-                <img src="/Dulcería/public/img/DulceriaConejos.png" alt="Cargando" class="logo-spinner h-10 w-10 object-contain">
+                <img src="/DulceriaConejos/public/img/DulceriaConejos.png" alt="Cargando" class="logo-spinner h-10 w-10 object-contain">
             </div>
         </div>
     </div>
@@ -45,7 +45,7 @@ ob_start();
         <h3 class="text-lg font-semibold text-gray-800 mb-4">⚠️ Stock Bajo</h3>
         <div id="listaStockBajo" class="overflow-x-auto">
             <div class="flex items-center justify-center h-40">
-                <img src="/Dulcería/public/img/DulceriaConejos.png" alt="Cargando" class="logo-spinner h-10 w-10 object-contain">
+                <img src="/DulceriaConejos/public/img/DulceriaConejos.png" alt="Cargando" class="logo-spinner h-10 w-10 object-contain">
             </div>
         </div>
     </div>
@@ -56,7 +56,7 @@ ob_start();
     <h3 class="text-lg font-semibold text-gray-800 mb-4">🧾 Últimas Ventas</h3>
     <div id="ultimasVentas" class="overflow-x-auto">
         <div class="flex items-center justify-center h-40">
-            <img src="/Dulcería/public/img/DulceriaConejos.png" alt="Cargando" class="logo-spinner h-10 w-10 object-contain">
+            <img src="/DulceriaConejos/public/img/DulceriaConejos.png" alt="Cargando" class="logo-spinner h-10 w-10 object-contain">
         </div>
     </div>
 </div>
@@ -72,7 +72,7 @@ include 'layout.php';
         try {
             // Ventas de hoy
             const hoy = new Date().toISOString().split('T')[0];
-            const ventasHoyData = await apiRequest(`/Dulcería/api/reportes.php/ventas?periodo=diario&fecha=${hoy}`);
+            const ventasHoyData = await apiRequest(`/DulceriaConejos/api/reportes.php/ventas?periodo=diario&fecha=${hoy}`);
             
             if (ventasHoyData.success && ventasHoyData.data.resumen) {
                 const resumen = ventasHoyData.data.resumen;
@@ -81,7 +81,7 @@ include 'layout.php';
             }
             
             // Ventas del mes
-            const ventasMesData = await apiRequest(`/Dulcería/api/reportes.php/ventas?periodo=mensual&fecha=${hoy}`);
+            const ventasMesData = await apiRequest(`/DulceriaConejos/api/reportes.php/ventas?periodo=mensual&fecha=${hoy}`);
             
             if (ventasMesData.success && ventasMesData.data.resumen) {
                 const resumen = ventasMesData.data.resumen;
@@ -90,7 +90,7 @@ include 'layout.php';
             }
             
             // Productos
-            const productosData = await apiRequest('/Dulcería/api/productos.php');
+            const productosData = await apiRequest('/DulceriaConejos/api/productos.php');
             if (productosData.success) {
                 document.getElementById('totalProductos').textContent = productosData.data.length;
                 const activos = productosData.data.filter(p => p.activo == 1).length;
@@ -98,20 +98,20 @@ include 'layout.php';
             }
             
             // Stock bajo
-            const stockBajoData = await apiRequest('/Dulcería/api/reportes.php/stock-bajo');
+            const stockBajoData = await apiRequest('/DulceriaConejos/api/reportes.php/stock-bajo');
             if (stockBajoData.success) {
                 document.getElementById('stockBajo').textContent = stockBajoData.data.length;
                 mostrarStockBajo(stockBajoData.data);
             }
             
             // Productos más vendidos
-            const productosTopData = await apiRequest('/Dulcería/api/reportes.php/productos-top?limite=5');
+            const productosTopData = await apiRequest('/DulceriaConejos/api/reportes.php/productos-top?limite=5');
             if (productosTopData.success) {
                 mostrarProductosTop(productosTopData.data);
             }
             
             // Últimas ventas
-            const ventasData = await apiRequest('/Dulcería/api/pos.php/ventas?limite=10');
+            const ventasData = await apiRequest('/DulceriaConejos/api/pos.php/ventas?limite=10');
             if (ventasData.success) {
                 mostrarUltimasVentas(ventasData.data);
             }

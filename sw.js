@@ -3,19 +3,19 @@
  * Versión: 1.0.0
  */
 
-const CACHE_NAME = 'dulceria-pos-v1';
+const CACHE_NAME = 'dulceria-pos-v2.0.0';
 const ASSETS_TO_CACHE = [
-    '/Dulcería/',
-    '/Dulcería/pages/login.php',
-    '/Dulcería/pages/dashboard.php',
-    '/Dulcería/pages/pos.php',
-    '/Dulcería/pages/inventario.php',
-    '/Dulcería/pages/productos.php',
-    '/Dulcería/pages/ventas.php',
-    '/Dulcería/pages/reportes.php',
-    '/Dulcería/pages/usuarios.php',
-    '/Dulcería/pages/roles.php',
-    '/Dulcería/pages/configuracion.php',
+    '/DulceriaConejos/',
+    '/DulceriaConejos/pages/login.php',
+    '/DulceriaConejos/pages/dashboard.php',
+    '/DulceriaConejos/pages/pos.php',
+    '/DulceriaConejos/pages/inventario.php',
+    '/DulceriaConejos/pages/productos.php',
+    '/DulceriaConejos/pages/ventas.php',
+    '/DulceriaConejos/pages/reportes.php',
+    '/DulceriaConejos/pages/usuarios.php',
+    '/DulceriaConejos/pages/roles.php',
+    '/DulceriaConejos/pages/configuracion.php',
     // CDN resources
     'https://cdn.tailwindcss.com',
     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
@@ -116,7 +116,7 @@ self.addEventListener('fetch', (event) => {
                     .catch(() => {
                         // Si falla, mostrar página offline
                         if (request.destination === 'document') {
-                            return caches.match('/Dulcería/pages/offline.html');
+                            return caches.match('/DulceriaConejos/pages/offline.html');
                         }
                     });
             })
@@ -129,10 +129,10 @@ self.addEventListener('push', (event) => {
     const title = data.title || 'Dulcería POS';
     const options = {
         body: data.body || 'Nueva notificación',
-        icon: '/Dulcería/icons/icon-192x192.png',
-        badge: '/Dulcería/icons/icon-96x96.png',
+        icon: '/DulceriaConejos/icons/icon-192x192.png',
+        badge: '/DulceriaConejos/icons/icon-96x96.png',
         vibrate: [200, 100, 200],
-        data: data.url || '/Dulcería/'
+        data: data.url || '/DulceriaConejos/'
     };
 
     event.waitUntil(

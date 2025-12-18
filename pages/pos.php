@@ -330,7 +330,7 @@ include 'layout.php';
             cargarCarritoGuardado();
             
             // Cargar categorías
-            const catData = await apiRequest('/Dulcería/api/categorias.php');
+            const catData = await apiRequest('/DulceriaConejos/api/categorias.php');
             if (catData.success) {
                 categorias = catData.data;
                 const select = document.getElementById('filtroCategoria');
@@ -383,7 +383,7 @@ include 'layout.php';
     
     async function buscarProductos() {
         try {
-            const data = await apiRequest('/Dulcería/api/productos.php?activo=1');
+            const data = await apiRequest('/DulceriaConejos/api/productos.php?activo=1');
             if (data.success) {
                 productos = data.data;
                 aplicarFiltros();
@@ -445,7 +445,7 @@ include 'layout.php';
             let precioTexto = (p.tipo_producto === 'granel' || p.tipo === 'granel') ? 'Desde $' : '$';
             precioTexto += precio.toLocaleString('es-MX', {minimumFractionDigits: 2});
             
-            const imagenUrl = p.imagen_url || '/Dulcería/public/img/productos/default.png';
+            const imagenUrl = p.imagen_url || '/DulceriaConejos/public/img/productos/default.png';
             
             // Stock badge - solo visible para dueño
             const stockBadge = esDueno ? `
@@ -460,7 +460,7 @@ include 'layout.php';
                     <div class="flex gap-3 items-start">
                         <img src="${imagenUrl}" alt="${p.nombre}" 
                             class="w-20 h-20 object-cover rounded-lg border-2 border-purple-100 shadow-sm" 
-                            onerror="this.src='/Dulcería/public/img/productos/default.png'">
+                            onerror="this.src='/DulceriaConejos/public/img/productos/default.png'">
                         <div class="flex-1 min-w-0">
                             <h4 class="font-semibold text-gray-800 truncate mb-1">${p.nombre}</h4>
                             <p class="text-xs text-gray-500 mb-2">
@@ -574,7 +574,7 @@ include 'layout.php';
             const productoId = producto.id_producto || producto.id;
             console.log('ID del producto:', productoId);
             
-            const urlPrecio = `/Dulcería/api/productos.php/${productoId}/precio-granel?peso=${pesoGramos}`;
+            const urlPrecio = `/DulceriaConejos/api/productos.php/${productoId}/precio-granel?peso=${pesoGramos}`;
             console.log('🔗 Llamando API:', urlPrecio);
             
             // Obtener precio para ese peso específico
@@ -634,7 +634,7 @@ include 'layout.php';
             // FIX: Usar id o id_producto según lo que devuelva la API
             const productoId = productoGranelSeleccionado.id_producto || productoGranelSeleccionado.id;
             
-            const urlPrecio = `/Dulcería/api/productos.php/${productoId}/precio-granel?peso=${peso}`;
+            const urlPrecio = `/DulceriaConejos/api/productos.php/${productoId}/precio-granel?peso=${peso}`;
             console.log('🔗 Llamando API (modal):', urlPrecio);
             
             const data = await apiRequest(urlPrecio);
@@ -655,7 +655,7 @@ include 'layout.php';
         // Obtener el precio correcto para este peso desde la API
         try {
             const productoId = productoGranelSeleccionado.id_producto || productoGranelSeleccionado.id;
-            const urlPrecio = `/Dulcería/api/productos.php/${productoId}/precio-granel?peso=${peso}`;
+            const urlPrecio = `/DulceriaConejos/api/productos.php/${productoId}/precio-granel?peso=${peso}`;
             
             const data = await apiRequest(urlPrecio);
             
@@ -791,7 +791,7 @@ include 'layout.php';
                 peso: peso,
                 precio_unitario: precio,
                 stock_disponible: stockDisponible,
-                imagen_url: producto.imagen_url || '/Dulcería/public/img/productos/default.png'
+                imagen_url: producto.imagen_url || '/DulceriaConejos/public/img/productos/default.png'
             };
             
             console.log('Nuevo item a agregar:', nuevoItem);
@@ -854,7 +854,7 @@ include 'layout.php';
                 descripcion += ` <span class="text-purple-600">(${item.peso}g)</span>`;
             }
             
-            const imagenUrl = item.imagen_url || '/Dulcería/public/img/productos/default.png';
+            const imagenUrl = item.imagen_url || '/DulceriaConejos/public/img/productos/default.png';
             
             // Botón eliminar - solo visible para dueño
             const btnEliminar = esDueno ? `
@@ -870,7 +870,7 @@ include 'layout.php';
                     <div class="flex items-center gap-3">
                         <img src="${imagenUrl}" alt="${item.nombre}" 
                             class="w-16 h-16 object-cover rounded-lg border-2 border-purple-300 shadow-sm"
-                            onerror="this.src='/Dulcería/public/img/productos/default.png'">
+                            onerror="this.src='/DulceriaConejos/public/img/productos/default.png'">
                         <div class="flex-1 min-w-0">
                             <h4 class="font-semibold text-gray-800">${descripcion}</h4>
                             <p class="text-sm text-purple-600">
@@ -1006,7 +1006,7 @@ include 'layout.php';
             btn.innerHTML = '<i class="fas fa-spinner fa-spin text-lg"></i><span class="text-sm">Imprimiendo...</span>';
             
             // Obtener configuración de impresora
-            const configData = await apiRequest('/Dulcería/api/configuracion.php/impresora');
+            const configData = await apiRequest('/DulceriaConejos/api/configuracion.php/impresora');
             
             if (!configData.success || !configData.data.habilitada) {
                 showNotification('⚠️ Impresora térmica no configurada', 'warning');
@@ -1018,7 +1018,7 @@ include 'layout.php';
             
             // Validar que la impresora esté conectada
             const validacion = await apiRequest(
-                `/Dulcería/api/validar-impresora.php?accion=validar&nombre=${encodeURIComponent(nombreImpresora)}`
+                `/DulceriaConejos/api/validar-impresora.php?accion=validar&nombre=${encodeURIComponent(nombreImpresora)}`
             );
             
             if (!validacion.success || !validacion.conectada) {
@@ -1040,7 +1040,7 @@ include 'layout.php';
             }));
             
             // Enviar a imprimir preview
-            const printData = await apiRequest('/Dulcería/api/imprimir-termica.php', {
+            const printData = await apiRequest('/DulceriaConejos/api/imprimir-termica.php', {
                 method: 'POST',
                 body: JSON.stringify({
                     tipo: 'preview',
@@ -1112,7 +1112,7 @@ include 'layout.php';
             btnTermica.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin text-lg"></i><span class="text-sm">Procesando...</span>';
             
-            const data = await apiRequest('/Dulcería/api/pos.php/venta', {
+            const data = await apiRequest('/DulceriaConejos/api/pos.php/venta', {
                 method: 'POST',
                 body: JSON.stringify(venta)
             });
@@ -1158,7 +1158,7 @@ include 'layout.php';
             console.log('ID de venta:', ventaId);
             
             // Obtener configuración de impresora
-            const configData = await apiRequest('/Dulcería/api/configuracion.php/impresora');
+            const configData = await apiRequest('/DulceriaConejos/api/configuracion.php/impresora');
             
             if (!configData.success || !configData.data.habilitada) {
                 showNotification('Impresora térmica no configurada', 'warning');
@@ -1171,7 +1171,7 @@ include 'layout.php';
             // VALIDAR que la impresora esté conectada
             console.log('🔍 Validando conexión de impresora...');
             const validacionData = await apiRequest(
-                `/Dulcería/api/validar-impresora.php?accion=validar&nombre=${encodeURIComponent(config.nombre_impresora)}`
+                `/DulceriaConejos/api/validar-impresora.php?accion=validar&nombre=${encodeURIComponent(config.nombre_impresora)}`
             );
             
             console.log('📄 Resultado validación:', validacionData);
@@ -1189,7 +1189,7 @@ include 'layout.php';
             console.log('✅ Impresora conectada y disponible');
             
             // Llamar API de impresión térmica
-            const url = '/Dulcería/api/imprimir-termica.php';
+            const url = '/DulceriaConejos/api/imprimir-termica.php';
             console.log('🔗 Llamando API térmica:', url);
             
             const data = await apiRequest(url, {
@@ -1225,7 +1225,7 @@ include 'layout.php';
             console.log('ID de venta:', idVenta);
             console.log('Número de copias:', copias);
             
-            const url = `/Dulcería/api/tickets.php/${idVenta}`;
+            const url = `/DulceriaConejos/api/tickets.php/${idVenta}`;
             console.log('🔗 Llamando API:', url);
             
             const data = await apiRequest(url);

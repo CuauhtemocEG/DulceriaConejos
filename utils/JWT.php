@@ -22,6 +22,9 @@ class JWT {
      * Crear un nuevo token JWT
      */
     public static function encode($payload, $secret = JWT_SECRET_KEY) {
+        // Asegurar zona horaria correcta
+        date_default_timezone_set('America/Mexico_City');
+        
         // Header
         $header = json_encode([
             'typ' => 'JWT',
@@ -55,6 +58,9 @@ class JWT {
      * Decodificar y validar un token JWT
      */
     public static function decode($token, $secret = JWT_SECRET_KEY) {
+        // Asegurar zona horaria correcta
+        date_default_timezone_set('America/Mexico_City');
+        
         // Dividir el token
         $tokenParts = explode('.', $token);
         

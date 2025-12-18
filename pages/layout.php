@@ -12,13 +12,13 @@
     <meta name="description" content="Sistema de Punto de Venta para Dulcería - Gestión de inventario, ventas y reportes">
     <meta name="theme-color" content="#9333EA">
     
-    <link rel="manifest" href="/Dulcería/manifest.json">
+    <link rel="manifest" href="/DulceriaConejos/manifest.json">
     
-    <link rel="icon" type="image/png" sizes="32x32" href="/Dulcería/icons/icon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/Dulcería/icons/icon-16x16.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/Dulcería/icons/icon-180x180.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/Dulcería/icons/icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/Dulcería/icons/icon-144x144.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/DulceriaConejos/icons/icon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/DulceriaConejos/icons/icon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/DulceriaConejos/icons/icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/DulceriaConejos/icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/DulceriaConejos/icons/icon-144x144.png">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -215,7 +215,7 @@
         <!-- Header con logo -->
         <div class="p-6 border-b border-white/10 bg-black/20 backdrop-blur-sm">
             <div class="flex items-center justify-center mb-3 logo-container bg-white/10 rounded-2xl p-4 backdrop-blur-md">
-                <img src="/Dulcería/public/img/DulceriaConejos.png" alt="Dulcería Conejos" class="h-16 w-auto drop-shadow-lg">
+                <img src="/DulceriaConejos/public/img/DulceriaConejos.png" alt="Dulcería Conejos" class="h-16 w-auto drop-shadow-lg">
             </div>
             <div class="text-center">
                 <p class="text-sm text-amber-300 font-semibold tracking-wide">Dulcería Conejos</p>
@@ -227,7 +227,7 @@
             <ul class="space-y-1">
                 <!-- Inicio -->
                 <li id="menuDashboard" class="hidden menu-item" style="animation-delay: 0.05s">
-                    <a href="/Dulcería/pages/dashboard.php" class="nav-link flex items-center px-4 py-3 rounded-xl hover:bg-white/20 transition-all duration-200 group">
+                    <a href="/DulceriaConejos/pages/dashboard.php" class="nav-link flex items-center px-4 py-3 rounded-xl hover:bg-white/20 transition-all duration-200 group">
                         <i class="fas fa-home text-xl mr-3 transform transition-transform group-hover:scale-110"></i>
                         <span class="text-sm font-medium">Inicio</span>
                     </a>
@@ -240,19 +240,19 @@
                     </div>
                     <ul class="space-y-1">
                         <li id="menuInventario" class="hidden menu-item" style="animation-delay: 0.1s">
-                            <a href="/Dulcería/pages/inventario.php" class="nav-link flex items-center px-4 py-3 rounded-xl hover:bg-white/20 transition-all duration-200 group">
+                            <a href="/DulceriaConejos/pages/inventario.php" class="nav-link flex items-center px-4 py-3 rounded-xl hover:bg-white/20 transition-all duration-200 group">
                                 <i class="fas fa-warehouse text-xl mr-3 transform transition-transform group-hover:scale-110"></i>
                                 <span class="text-sm font-medium">Gestión de Inventario</span>
                             </a>
                         </li>
                         <li id="menuProductos" class="hidden menu-item" style="animation-delay: 0.15s">
-                            <a href="/Dulcería/pages/productos.php" class="nav-link flex items-center px-4 py-3 rounded-xl hover:bg-white/20 transition-all duration-200 group">
+                            <a href="/DulceriaConejos/pages/productos.php" class="nav-link flex items-center px-4 py-3 rounded-xl hover:bg-white/20 transition-all duration-200 group">
                                 <i class="fas fa-boxes text-xl mr-3 transform transition-transform group-hover:scale-110"></i>
                                 <span class="text-sm font-medium">Gestión de Productos</span>
                             </a>
                         </li>
                         <li id="menuTemporadas" class="hidden menu-item" style="animation-delay: 0.2s">
-                            <a href="/Dulcería/pages/temporadas.php" class="nav-link flex items-center px-4 py-3 rounded-xl hover:bg-white/20 transition-all duration-200 group">
+                            <a href="/DulceriaConejos/pages/temporadas.php" class="nav-link flex items-center px-4 py-3 rounded-xl hover:bg-white/20 transition-all duration-200 group">
                                 <i class="fas fa-calendar-alt text-xl mr-3 transform transition-transform group-hover:scale-110"></i>
                                 <span class="text-sm font-medium">Lista de Temporadas</span>
                             </a>
@@ -267,19 +267,19 @@
                     </div>
                     <ul class="space-y-1">
                         <li id="menuPos" class="menu-item" style="animation-delay: 0.25s">
-                            <a href="/Dulcería/pages/pos.php" class="nav-link flex items-center px-4 py-3 rounded-xl hover:bg-white/20 transition-all duration-200 group">
+                            <a href="/DulceriaConejos/pages/pos.php" class="nav-link flex items-center px-4 py-3 rounded-xl hover:bg-white/20 transition-all duration-200 group">
                                 <i class="fas fa-cash-register text-xl mr-3 transform transition-transform group-hover:scale-110"></i>
                                 <span class="text-sm font-medium">Punto de Venta (POS)</span>
                             </a>
                         </li>
                         <li id="menuVentas" class="hidden menu-item" style="animation-delay: 0.3s">
-                            <a href="/Dulcería/pages/ventas.php" class="nav-link flex items-center px-4 py-3 rounded-xl hover:bg-white/20 transition-all duration-200 group">
+                            <a href="/DulceriaConejos/pages/ventas.php" class="nav-link flex items-center px-4 py-3 rounded-xl hover:bg-white/20 transition-all duration-200 group">
                                 <i class="fas fa-shopping-cart text-xl mr-3 transform transition-transform group-hover:scale-110"></i>
                                 <span class="text-sm font-medium">Gestión de Ordenes</span>
                             </a>
                         </li>
                         <li id="menuReportes" class="hidden menu-item" style="animation-delay: 0.35s">
-                            <a href="/Dulcería/pages/reportes.php" class="nav-link flex items-center px-4 py-3 rounded-xl hover:bg-white/20 transition-all duration-200 group">
+                            <a href="/DulceriaConejos/pages/reportes.php" class="nav-link flex items-center px-4 py-3 rounded-xl hover:bg-white/20 transition-all duration-200 group">
                                 <i class="fas fa-chart-line text-xl mr-3 transform transition-transform group-hover:scale-110"></i>
                                 <span class="text-sm font-medium">Reportes de Sistema</span>
                             </a>
@@ -294,25 +294,25 @@
                     </div>
                     <ul class="space-y-1">
                         <li id="menuUsuarios" class="hidden menu-item" style="animation-delay: 0.4s">
-                            <a href="/Dulcería/pages/usuarios.php" class="nav-link flex items-center px-4 py-3 rounded-xl hover:bg-white/20 transition-all duration-200 group">
+                            <a href="/DulceriaConejos/pages/usuarios.php" class="nav-link flex items-center px-4 py-3 rounded-xl hover:bg-white/20 transition-all duration-200 group">
                                 <i class="fas fa-users text-xl mr-3 transform transition-transform group-hover:scale-110"></i>
                                 <span class="text-sm font-medium">Gestión de Usuarios</span>
                             </a>
                         </li>
                         <li id="menuRoles" class="hidden menu-item" style="animation-delay: 0.45s">
-                            <a href="/Dulcería/pages/roles.php" class="nav-link flex items-center px-4 py-3 rounded-xl hover:bg-white/20 transition-all duration-200 group">
+                            <a href="/DulceriaConejos/pages/roles.php" class="nav-link flex items-center px-4 py-3 rounded-xl hover:bg-white/20 transition-all duration-200 group">
                                 <i class="fas fa-user-shield text-xl mr-3 transform transition-transform group-hover:scale-110"></i>
                                 <span class="text-sm font-medium">Roles y Permisos</span>
                             </a>
                         </li>
                         <li id="menuConfiguracion" class="hidden menu-item" style="animation-delay: 0.5s">
-                            <a href="/Dulcería/pages/configuracion.php" class="nav-link flex items-center px-4 py-3 rounded-xl hover:bg-white/20 transition-all duration-200 group">
+                            <a href="/DulceriaConejos/pages/configuracion.php" class="nav-link flex items-center px-4 py-3 rounded-xl hover:bg-white/20 transition-all duration-200 group">
                                 <i class="fas fa-cog text-xl mr-3 transform transition-transform group-hover:scale-110"></i>
                                 <span class="text-sm font-medium">Configuración</span>
                             </a>
                         </li>
                         <li id="menuConfigImpresora" class="hidden menu-item" style="animation-delay: 0.55s">
-                            <a href="/Dulcería/pages/config-impresora.php" class="nav-link flex items-center px-4 py-3 rounded-xl hover:bg-white/20 transition-all duration-200 group">
+                            <a href="/DulceriaConejos/pages/config-impresora.php" class="nav-link flex items-center px-4 py-3 rounded-xl hover:bg-white/20 transition-all duration-200 group">
                                 <i class="fas fa-print text-xl mr-3 transform transition-transform group-hover:scale-110"></i>
                                 <span class="text-sm font-medium">Config. Impresora</span>
                             </a>
@@ -375,7 +375,7 @@
         const token = localStorage.getItem('token');
         
         if (!token || !user.id_usuario) {
-            window.location.href = '/Dulcería/pages/login.php';
+            window.location.href = '/DulceriaConejos/pages/login.php';
         }
         
         // Mostrar información del usuario
@@ -530,7 +530,7 @@
             }
             
             try {
-                await apiRequest('/Dulcería/api/auth.php/logout', {
+                await apiRequest('/DulceriaConejos/api/auth.php/logout', {
                     method: 'POST'
                 });
             } catch (error) {
@@ -538,7 +538,7 @@
             }
             
             localStorage.clear();
-            window.location.href = '/Dulcería/pages/login.php';
+            window.location.href = '/DulceriaConejos/pages/login.php';
         }
         
         // Función helper para hacer peticiones a la API
@@ -608,7 +608,7 @@
         
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/Dulcería/sw.js')
+                navigator.serviceWorker.register('/DulceriaConejos/sw.js')
                     .then((registration) => {
                         console.log('✅ Service Worker registrado:', registration.scope);
                         

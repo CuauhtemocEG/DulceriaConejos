@@ -4,31 +4,32 @@
  */
 
 // Configuración de la base de datos
-define('DB_HOST', 'localhost');
+// MAMP usa puerto 8889 para MySQL por defecto
+define('DB_HOST', '127.0.0.1:8889');
 define('DB_NAME', 'dulceria_pos');
 define('DB_USER', 'root');
 define('DB_PASS', 'root'); // Cambia esto según tu configuración de MAMP
 
 // Configuración de JWT
 define('JWT_SECRET_KEY', 'tu_clave_secreta_muy_segura_cambiar_en_produccion');
-define('JWT_EXPIRATION_TIME', 86400); // 24 horas en segundos
+define('JWT_EXPIRATION_TIME', 604800); // 7 días en segundos (7 * 24 * 60 * 60)
 
 // Configuración del negocio para tickets
 define('NEGOCIO_NOMBRE', 'Dulcería Conejos');
 define('NEGOCIO_DIRECCION', 'Plaza 87 Local 2, Camino Real a Momoxpan 1109, Santiago Momoxpan,72776 Cholula de Rivadavia, Pue.');
 define('NEGOCIO_SUCURSAL', 'Momoxpan');
-define('NEGOCIO_LOGO', '/Dulcería/public/img/DulceriaConejos.png');
+define('NEGOCIO_LOGO', '/DulceriaConejos/public/img/DulceriaConejos.png');
 
 // Configuración de zona horaria
 date_default_timezone_set('America/Mexico_City');
 
 // Configuración de errores
-if ($_SERVER['SERVER_NAME'] === 'localhost') {
+if (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] === 'localhost') {
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
 } else {
-    error_reporting(0);
-    ini_set('display_errors', 0);
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
 }
 
 // Configuración de headers para API
@@ -38,7 +39,7 @@ header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
 // Manejar preflight requests
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit();
 }
@@ -57,7 +58,7 @@ define('UTILS_PATH', BASE_PATH . '/utils');
 define('MIDDLEWARE_PATH', BASE_PATH . '/middleware');
 
 // URL base del sistema
-define('BASE_URL', 'http://localhost:8888/Dulcería');
+define('BASE_URL', 'http://localhost:8888/DulceriaConejos');
 define('API_URL', BASE_URL . '/api');
 
 // Configuración de ticket

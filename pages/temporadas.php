@@ -23,7 +23,7 @@ ob_start();
         <div class="col-span-full text-center py-20">
             <div class="logo-spinner-container">
                 <div class="relative">
-                    <img src="/Dulcería/public/img/DulceriaConejos.png" alt="Cargando" class="logo-spinner h-12 w-12 object-contain">
+                    <img src="/DulceriaConejos/public/img/DulceriaConejos.png" alt="Cargando" class="logo-spinner h-12 w-12 object-contain">
                 </div>
                 <p class="mt-2 text-gray-400">Cargando temporadas...</p>
             </div>
@@ -157,7 +157,7 @@ include 'layout.php';
     
     async function cargarTemporadas() {
         try {
-            const data = await apiRequest('/Dulcería/api/temporadas.php');
+            const data = await apiRequest('/DulceriaConejos/api/temporadas.php');
             if (data.success) {
                 temporadas = data.data;
                 mostrarTemporadas(temporadas);
@@ -307,7 +307,7 @@ include 'layout.php';
         };
         
         try {
-            let url = '/Dulcería/api/temporadas.php';
+            let url = '/DulceriaConejos/api/temporadas.php';
             let method = 'POST';
             
             if (esEdicion) {
@@ -341,7 +341,7 @@ include 'layout.php';
         }
         
         try {
-            const data = await apiRequest(`/Dulcería/api/temporadas.php/${id}/activar`, {
+            const data = await apiRequest(`/DulceriaConejos/api/temporadas.php/${id}/activar`, {
                 method: 'PUT'
             });
             
@@ -364,7 +364,7 @@ include 'layout.php';
         }
         
         try {
-            const data = await apiRequest(`/Dulcería/api/temporadas.php/${id}/desactivar`, {
+            const data = await apiRequest(`/DulceriaConejos/api/temporadas.php/${id}/desactivar`, {
                 method: 'PUT'
             });
             
@@ -387,7 +387,7 @@ include 'layout.php';
         }
         
         try {
-            const data = await apiRequest(`/Dulcería/api/temporadas.php/${id}`, {
+            const data = await apiRequest(`/DulceriaConejos/api/temporadas.php/${id}`, {
                 method: 'DELETE'
             });
             
@@ -410,11 +410,11 @@ include 'layout.php';
         
         try {
             // Cargar todos los productos activos
-            const dataProductos = await apiRequest('/Dulcería/api/productos.php?activo=1');
+            const dataProductos = await apiRequest('/DulceriaConejos/api/productos.php?activo=1');
             if (!dataProductos.success) throw new Error('Error al cargar productos');
             
             // Cargar productos de la temporada
-            const dataTemp = await apiRequest(`/Dulcería/api/temporadas.php/${idTemporada}/productos`);
+            const dataTemp = await apiRequest(`/DulceriaConejos/api/temporadas.php/${idTemporada}/productos`);
             if (!dataTemp.success) throw new Error('Error al cargar productos de temporada');
             
             todosProductos = dataProductos.data;
@@ -485,7 +485,7 @@ include 'layout.php';
         let html = '<div class="grid grid-cols-1 md:grid-cols-2 gap-4">';
         productosAMostrar.forEach(p => {
             const precioVenta = parseFloat(p.precio_venta);
-            const imagenUrl = p.imagen_url || '/Dulcería/public/img/productos/default.png';
+            const imagenUrl = p.imagen_url || '/DulceriaConejos/public/img/productos/default.png';
             
             html += `
                 <div class="bg-white border-2 border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
@@ -493,7 +493,7 @@ include 'layout.php';
                         <!-- Imagen -->
                         <img src="${imagenUrl}" alt="${p.nombre}" 
                             class="w-20 h-20 object-cover rounded-lg border border-gray-200"
-                            onerror="this.src='/Dulcería/public/img/productos/default.png'">
+                            onerror="this.src='/DulceriaConejos/public/img/productos/default.png'">
                         
                         <!-- Info -->
                         <div class="flex-1">
@@ -524,7 +524,7 @@ include 'layout.php';
     
     async function agregarProducto(idProducto) {
         try {
-            const data = await apiRequest(`/Dulcería/api/temporadas.php/${temporadaActual}/productos/${idProducto}`, {
+            const data = await apiRequest(`/DulceriaConejos/api/temporadas.php/${temporadaActual}/productos/${idProducto}`, {
                 method: 'POST'
             });
             
@@ -544,7 +544,7 @@ include 'layout.php';
     
     async function quitarProducto(idProducto) {
         try {
-            const data = await apiRequest(`/Dulcería/api/temporadas.php/${temporadaActual}/productos/${idProducto}`, {
+            const data = await apiRequest(`/DulceriaConejos/api/temporadas.php/${temporadaActual}/productos/${idProducto}`, {
                 method: 'DELETE'
             });
             

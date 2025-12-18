@@ -7,7 +7,7 @@ require_once __DIR__ . '/config/config.php';
 
 // Definir rutas
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$uri = str_replace('/Dulcería', '', $uri);
+$uri = str_replace('/DulceriaConejos', '', $uri);
 
 // Remover query string si existe
 $uri = strtok($uri, '?');
@@ -42,7 +42,7 @@ if (array_key_exists($uri, $protectedRoutes)) {
     session_start();
     
     if (!isset($_SESSION['user_token'])) {
-        header('Location: /Dulcería/login');
+        header('Location: /DulceriaConejos/login');
         exit();
     }
     
@@ -72,6 +72,6 @@ echo "<!DOCTYPE html>
 <body>
     <h1>404 - Página no encontrada</h1>
     <p>La página que buscas no existe.</p>
-    <a href='/Dulcería/'>Volver al inicio</a>
+    <a href='/DulceriaConejos/'>Volver al inicio</a>
 </body>
 </html>";

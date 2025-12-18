@@ -353,7 +353,7 @@ ob_start();
             }
             if (confirm('¿Deseas actualizar el margen y precio de todos los productos existentes de tipo ' + tipo + '?')) {
                 try {
-                    const res = await fetch('/Dulcería/utils/actualizar_margen_global.php?tipo=' + tipo + '&margen=' + margen);
+                    const res = await fetch('/DulceriaConejos/utils/actualizar_margen_global.php?tipo=' + tipo + '&margen=' + margen);
                     if (res.ok) {
                         const txt = await res.text();
                         mostrarNotificacion('Productos actualizados: ' + txt, 'success');
@@ -384,7 +384,7 @@ ob_start();
             // Preguntar si se desea actualizar productos existentes
             if (confirm('¿Deseas actualizar los márgenes y precios de TODOS los productos existentes de tipo granel (todos los pesos: 100g, 250g, 500g, 1kg)?')) {
                 try {
-                    const res = await fetch('/Dulcería/utils/actualizar_margenes_granel_global.php', {
+                    const res = await fetch('/DulceriaConejos/utils/actualizar_margenes_granel_global.php', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
