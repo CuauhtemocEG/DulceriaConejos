@@ -571,7 +571,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 $impresora->linea('=', 32);
                 $impresora->texto('Atendio:'. $venta['vendedor_nombre'], 'left');
                 $impresora->texto('Folio: #' . $venta['folio'], 'left');
-                $impresora->texto('Fecha: ' . date('d/m/Y H:i:s', strtotime($venta['fecha'])), 'left');
+                $impresora->texto('Fecha: ' . date('d/m/Y H:i:s', strtotime($venta['created_at'])), 'left');
                 $impresora->linea('=', 32);
                 $impresora->saltoLinea();
                 
