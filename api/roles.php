@@ -351,6 +351,12 @@ class RolesAPI {
                 'descripcion' => 'Administración de usuarios',
                 'permisos' => ['ver', 'crear', 'editar', 'eliminar'],
                 'tiene_menu' => true
+            ],
+            'configuracion' => [
+                'nombre' => 'Configuración del Sistema',
+                'descripcion' => 'Configuración general del sistema (impresora, etc.)',
+                'permisos' => ['ver', 'editar'],
+                'tiene_menu' => true
             ]
         ];
         

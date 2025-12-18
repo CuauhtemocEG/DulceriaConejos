@@ -47,7 +47,13 @@ class ConfiguracionAPI {
      * Actualizar configuración de impresora
      */
     public function actualizarConfiguracionImpresora() {
-        $this->auth->requirePermission($this->user, 'configuracion', 'editar');
+        // Permitir a dueños y administradores actualizar configuración
+        $rolNombre = strtolower($this->user['rol'] ?? '');
+        $esAdmin = in_array($rolNombre, ['dueño', 'dueno', 'admin', 'administrador']);
+        
+        if (!$esAdmin && !$this->auth->hasPermission($this->user, 'configuracion', 'editar')) {
+            Response::forbidden('No tiene permisos para actualizar la configuración');
+        }
         
         $data = json_decode(file_get_contents('php://input'), true);
         

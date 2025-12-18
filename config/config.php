@@ -5,7 +5,7 @@
 
 // Configuración de la base de datos
 // MAMP usa puerto 8889 para MySQL por defecto
-define('DB_HOST', '127.0.0.1:8889');
+define('DB_HOST', 'localhost:3306');
 define('DB_NAME', 'dulceria_pos');
 define('DB_USER', 'root');
 define('DB_PASS', 'root'); // Cambia esto según tu configuración de MAMP
@@ -58,7 +58,7 @@ define('UTILS_PATH', BASE_PATH . '/utils');
 define('MIDDLEWARE_PATH', BASE_PATH . '/middleware');
 
 // URL base del sistema
-define('BASE_URL', 'http://localhost:8888/DulceriaConejos');
+define('BASE_URL', 'http://localhost/DulceriaConejos');
 define('API_URL', BASE_URL . '/api');
 
 // Configuración de ticket

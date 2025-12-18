@@ -1,9 +1,9 @@
 /**
  * Service Worker para Dulcería POS
- * Versión: 1.0.0
+ * Versión: 2.1.0 - Optimización de imágenes
  */
 
-const CACHE_NAME = 'dulceria-pos-v2.0.0';
+const CACHE_NAME = 'dulceria-pos-v2.1.0';
 const ASSETS_TO_CACHE = [
     '/DulceriaConejos/',
     '/DulceriaConejos/pages/login.php',
@@ -64,6 +64,20 @@ self.addEventListener('fetch', (event) => {
     if (url.origin !== location.origin && !url.origin.includes('cdn')) {
         return;
     }
+    
+    // Ignorar imágenes default.png para evitar loops infinitos
+    if (url.pathname.includes('default.png')) {
+        event.respondWith(
+            fetch(request).catch(() => {
+                // Si falla, retornar respuesta vacía en lugar de reintentar
+                return new Response('', {
+                    status: 404,
+                    statusText: 'Not Found'
+                });
+            })
+        );
+        return;
+    }
 
     // Para peticiones API: siempre intentar red primero
     if (url.pathname.includes('/api/')) {
@@ -90,22 +104,24 @@ self.addEventListener('fetch', (event) => {
         caches.match(request)
             .then((cachedResponse) => {
                 if (cachedResponse) {
-                    // Retornar del cache pero actualizar en background
-                    fetch(request).then((response) => {
-                        if (response && response.status === 200) {
-                            caches.open(CACHE_NAME).then((cache) => {
-                                cache.put(request, response);
-                            });
-                        }
-                    }).catch(() => {});
+                    // Retornar del cache pero actualizar en background solo si no es una imagen
+                    if (!url.pathname.includes('/img/')) {
+                        fetch(request).then((response) => {
+                            if (response && response.status === 200) {
+                                caches.open(CACHE_NAME).then((cache) => {
+                                    cache.put(request, response);
+                                });
+                            }
+                        }).catch(() => {});
+                    }
                     return cachedResponse;
                 }
 
                 // Si no está en cache, obtener de la red
                 return fetch(request)
                     .then((response) => {
-                        // Guardar en cache si es exitoso
-                        if (response && response.status === 200) {
+                        // Guardar en cache solo si es exitoso y no es una imagen de producto
+                        if (response && response.status === 200 && !url.pathname.includes('/img/productos/')) {
                             const responseClone = response.clone();
                             caches.open(CACHE_NAME).then((cache) => {
                                 cache.put(request, responseClone);
@@ -114,10 +130,15 @@ self.addEventListener('fetch', (event) => {
                         return response;
                     })
                     .catch(() => {
-                        // Si falla, mostrar página offline
+                        // Si falla, mostrar página offline solo para documentos
                         if (request.destination === 'document') {
                             return caches.match('/DulceriaConejos/pages/offline.html');
                         }
+                        // Para otros recursos, retornar respuesta vacía
+                        return new Response('', {
+                            status: 404,
+                            statusText: 'Not Found'
+                        });
                     });
             })
     );

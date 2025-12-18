@@ -186,7 +186,7 @@ class ProductosAPI {
             
             if ($data['tipo_producto'] === 'pieza') {
                 // Pieza: margen de 100% (doble del precio de compra)
-                $precioVenta = $data['precio_compra'] * 2;
+                $precioVenta = round($data['precio_compra'] * 2);
                 $margenGanancia = 100.00;
             } elseif ($data['tipo_producto'] === 'granel') {
                 // Granel: usar el margen del 1kg como base (por defecto 40%)
@@ -194,11 +194,11 @@ class ProductosAPI {
                 if (isset($data['margenes_granel'][1000])) {
                     $margenGranel1kg = floatval($data['margenes_granel'][1000]);
                 }
-                $precioVenta = $data['precio_compra'] * (1 + ($margenGranel1kg / 100));
+                $precioVenta = round($data['precio_compra'] * (1 + ($margenGranel1kg / 100)));
                 $margenGanancia = $margenGranel1kg;
             } else {
                 // Anaquel: margen por defecto (30%)
-                $precioVenta = $data['precio_compra'] * (1 + ($margenGanancia / 100));
+                $precioVenta = round($data['precio_compra'] * (1 + ($margenGanancia / 100)));
             }
             
             // Insertar producto
@@ -460,7 +460,7 @@ class ProductosAPI {
             
             if ($peso['gramos'] == 1000) {
                 // 1kg: aplicar margen directamente al precio de compra
-                $precioCalculado = $precioCompra * (1 + ($peso['margen'] / 100));
+                $precioCalculado = round($precioCompra * (1 + ($peso['margen'] / 100)));
             } else {
                 // Otros pesos: primero calcular precio de 1kg, luego proporcional + margen adicional
                 // Obtener margen de 1kg (buscar en el array de pesos)
@@ -477,10 +477,10 @@ class ProductosAPI {
                 
                 // Precio proporcional al peso + margen adicional del peso
                 $precioBase = ($precioVenta1kg / 1000) * $peso['gramos'];
-                $precioCalculado = $precioBase * (1 + ($peso['margen'] / 100));
+                $precioCalculado = round($precioBase * (1 + ($peso['margen'] / 100)));
             }
             
-            $precioCalculado = round($precioCalculado, 2);
+            // Ya está redondeado arriba, no necesita round(x, 2)
             
             try {
                 $stmt->execute([
@@ -516,9 +516,8 @@ class ProductosAPI {
         ");
         
         foreach ($precios as $precio) {
-            $precioCalculado = ($nuevoPrecioBase / 1000) * $precio['peso_gramos'] * 
-                             (1 + ($precio['margen_adicional'] / 100));
-            $precioCalculado = round($precioCalculado, 2);
+            $precioCalculado = round(($nuevoPrecioBase / 1000) * $precio['peso_gramos'] * 
+                             (1 + ($precio['margen_adicional'] / 100)));
             
             $updateStmt->execute([$precioCalculado, $productoId, $precio['peso_gramos']]);
         }
@@ -553,7 +552,7 @@ class ProductosAPI {
             // Usar la misma lógica que crearPreciosGranel
             if ($precio['peso_gramos'] == 1000) {
                 // 1kg: aplicar margen directamente al precio de compra
-                $precioCalculado = $precioCompra * (1 + ($margen / 100));
+                $precioCalculado = round($precioCompra * (1 + ($margen / 100)));
             } else {
                 // Otros pesos: calcular desde precio de 1kg + margen adicional
                 // Primero obtener el margen de 1kg
@@ -574,10 +573,10 @@ class ProductosAPI {
                 
                 // Precio proporcional + margen adicional
                 $precioBase = ($precioVenta1kg / 1000) * $precio['peso_gramos'];
-                $precioCalculado = $precioBase * (1 + ($margen / 100));
+                $precioCalculado = round($precioBase * (1 + ($margen / 100)));
             }
             
-            $precioCalculado = round($precioCalculado, 2);
+            // Ya está redondeado arriba
             
             $updateStmt->execute([$margen, $precioCalculado, $productoId, $precio['peso_gramos']]);
         }
@@ -656,15 +655,15 @@ class ProductosAPI {
                 // Calcular precio según lógica correcta
                 if ($peso == 1000) {
                     // 1kg: usar precio_venta directamente
-                    $precioCalculado = floatval($producto['precio_venta']);
+                    $precioCalculado = round(floatval($producto['precio_venta']));
                 } else {
                     // Otros pesos: calcular desde precio de 1kg + margen adicional
                     $precioVenta1kg = floatval($producto['precio_venta']);
                     $precioBase = ($precioVenta1kg / 1000) * $peso;
-                    $precioCalculado = $precioBase * (1 + ($margen / 100));
+                    $precioCalculado = round($precioBase * (1 + ($margen / 100)));
                 }
                 
-                $precioCalculado = round($precioCalculado, 2);
+                // Ya está redondeado arriba
                 
                 $precioGranel = [
                     'precio' => $precioCalculado,

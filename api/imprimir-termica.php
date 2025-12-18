@@ -103,11 +103,18 @@ class ImpresorTermica {
     }
     
     public function imagenLogo() {
-        $rutaLogo = __DIR__ . '/../public/img/DulceriaConejos.png';
-        if (file_exists($rutaLogo)) {
-            return $this->imagenGigante($rutaLogo);
+        try {
+            $rutaLogo = __DIR__ . '/../public/img/DulceriaConejos.png';
+            if (file_exists($rutaLogo)) {
+                return $this->imagenGigante($rutaLogo);
+            }
+            // Si no existe el logo, continuar sin error
+            return false;
+        } catch (Exception $e) {
+            // Si hay error al cargar la imagen, continuar sin el logo
+            error_log('Error al cargar logo: ' . $e->getMessage());
+            return false;
         }
-        return false;
     }
     
     /**
@@ -115,56 +122,73 @@ class ImpresorTermica {
      * Este es el método que SÍ funciona correctamente en térmicas
      */
     public function imagenGigante($rutaImagen) {
-        if (!file_exists($rutaImagen)) {
+        try {
+            if (!file_exists($rutaImagen)) {
+                error_log('Imagen no encontrada: ' . $rutaImagen);
+                return false;
+            }
+            
+            // Cargar imagen
+            $imagenOriginal = $this->cargarImagen($rutaImagen);
+            if (!$imagenOriginal) {
+                error_log('No se pudo cargar imagen: ' . $rutaImagen);
+                return false;
+            }
+            
+            // Obtener dimensiones originales
+            $info = @getimagesize($rutaImagen);
+            if (!$info) {
+                imagedestroy($imagenOriginal);
+                return false;
+            }
+            
+            $anchoOriginal = $info[0];
+            $altoOriginal = $info[1];
+            
+            // Tamaño optimizado para 58mm (360 píxeles máximo)
+            $anchoFinal = 360;
+            $altoFinal = intval(($altoOriginal * $anchoFinal) / $anchoOriginal);
+            
+            // Limitar altura
+            if ($altoFinal > 180) {
+                $altoFinal = 180;
+                $anchoFinal = intval(($anchoOriginal * $altoFinal) / $altoOriginal);
+            }
+            
+            // Crear imagen redimensionada con fondo blanco
+            $imagenGigante = imagecreatetruecolor($anchoFinal, $altoFinal);
+            if (!$imagenGigante) {
+                imagedestroy($imagenOriginal);
+                return false;
+            }
+            
+            $blanco = imagecolorallocate($imagenGigante, 255, 255, 255);
+            imagefill($imagenGigante, 0, 0, $blanco);
+            
+            imagecopyresampled(
+                $imagenGigante, $imagenOriginal,
+                0, 0, 0, 0,
+                $anchoFinal, $altoFinal, $anchoOriginal, $altoOriginal
+            );
+            
+            // Convertir a comandos ESC/POS usando GS v 0
+            $comandoGigante = $this->crearComandoImagenGigante($imagenGigante, $anchoFinal, $altoFinal);
+            
+            if ($comandoGigante) {
+                $this->contenido .= self::ALIGN_CENTER;
+                $this->contenido .= $comandoGigante;
+                $this->contenido .= self::LF;
+            }
+            
+            // Limpiar memoria
+            imagedestroy($imagenOriginal);
+            imagedestroy($imagenGigante);
+            
+            return true;
+        } catch (Exception $e) {
+            error_log('Error en imagenGigante: ' . $e->getMessage());
             return false;
         }
-        
-        // Cargar imagen
-        $imagenOriginal = $this->cargarImagen($rutaImagen);
-        if (!$imagenOriginal) {
-            return false;
-        }
-        
-        // Obtener dimensiones originales
-        $info = getimagesize($rutaImagen);
-        $anchoOriginal = $info[0];
-        $altoOriginal = $info[1];
-        
-        // Tamaño optimizado para 58mm (360 píxeles máximo)
-        $anchoFinal = 360;
-        $altoFinal = intval(($altoOriginal * $anchoFinal) / $anchoOriginal);
-        
-        // Limitar altura
-        if ($altoFinal > 180) {
-            $altoFinal = 180;
-            $anchoFinal = intval(($anchoOriginal * $altoFinal) / $altoOriginal);
-        }
-        
-        // Crear imagen redimensionada con fondo blanco
-        $imagenGigante = imagecreatetruecolor($anchoFinal, $altoFinal);
-        $blanco = imagecolorallocate($imagenGigante, 255, 255, 255);
-        imagefill($imagenGigante, 0, 0, $blanco);
-        
-        imagecopyresampled(
-            $imagenGigante, $imagenOriginal,
-            0, 0, 0, 0,
-            $anchoFinal, $altoFinal, $anchoOriginal, $altoOriginal
-        );
-        
-        // Convertir a comandos ESC/POS usando GS v 0
-        $comandoGigante = $this->crearComandoImagenGigante($imagenGigante, $anchoFinal, $altoFinal);
-        
-        if ($comandoGigante) {
-            $this->contenido .= self::ALIGN_CENTER;
-            $this->contenido .= $comandoGigante;
-            $this->contenido .= self::LF;
-        }
-        
-        // Limpiar memoria
-        imagedestroy($imagenOriginal);
-        imagedestroy($imagenGigante);
-        
-        return true;
     }
     
     /**
@@ -306,20 +330,45 @@ class ImpresorTermica {
                 $success = ($returnCode === 0);
             }
             elseif (strpos($os, 'win') !== false) {
-                $nombreImpresoraEscapado = str_replace('"', '""', $nombreImpresora);
-                $archivoEscapado = str_replace('/', '\\\\', $archivoTemp);
+                // Para Windows: Crear un script VBS temporal que envíe a la impresora
+                $scriptVBS = tempnam(sys_get_temp_dir(), 'print_') . '.vbs';
                 
-                $comando = 'copy /B "' . $archivoEscapado . '" "\\\\\\\\localhost\\\\' . $nombreImpresoraEscapado . '" 2>&1';
+                $vbsContent = "Set objFSO = CreateObject(\"Scripting.FileSystemObject\")\n";
+                $vbsContent .= "Set objFile = objFSO.OpenTextFile(\"" . str_replace('\\', '\\\\', $archivoTemp) . "\", 1, False, 0)\n";
+                $vbsContent .= "strContent = objFile.ReadAll()\n";
+                $vbsContent .= "objFile.Close\n\n";
+                $vbsContent .= "Set objPrinter = CreateObject(\"WScript.Network\")\n";
+                $vbsContent .= "objPrinter.SetDefaultPrinter \"" . $nombreImpresora . "\"\n\n";
+                $vbsContent .= "Set objShell = CreateObject(\"WScript.Shell\")\n";
+                $vbsContent .= "objShell.Run \"cmd /c copy /b \\\"\" & \"" . str_replace('\\', '\\\\', $archivoTemp) . "\" & \"\\\" \\\"\\\\\\\\localhost\\\\\" & \"" . $nombreImpresora . "\" & \"\\\"\", 0, True\n";
+                
+                file_put_contents($scriptVBS, $vbsContent);
+                
+                // Ejecutar el script VBS
+                $comando = "cscript //NoLogo \"$scriptVBS\" 2>&1";
                 exec($comando, $output, $returnCode);
                 $resultado = implode("\n", $output);
-                $metodo = 'copy /B';
+                $metodo = 'vbscript-copy';
                 
+                // Limpiar script temporal
+                @unlink($scriptVBS);
+                
+                // Si falla con VBS, intentar método directo con copy
                 if ($returnCode !== 0) {
-                    $comando = 'print /D:"' . $nombreImpresoraEscapado . '" "' . $archivoEscapado . '" 2>&1';
-                    exec($comando, $output2, $returnCode2);
-                    $resultado = implode("\n", $output2);
-                    $returnCode = $returnCode2;
-                    $metodo = 'print';
+                    $output = [];
+                    $comando = "copy /B \"$archivoTemp\" \"\\\\localhost\\$nombreImpresora\" 2>&1";
+                    exec($comando, $output, $returnCode);
+                    $resultado = implode("\n", $output);
+                    $metodo = 'copy-localhost';
+                }
+                
+                // Si también falla, intentar método net use
+                if ($returnCode !== 0) {
+                    $output = [];
+                    $comando = "net use LPT1: \\\\localhost\\\"$nombreImpresora\" 2>&1 && copy /B \"$archivoTemp\" LPT1: 2>&1";
+                    exec($comando, $output, $returnCode);
+                    $resultado = implode("\n", $output);
+                    $metodo = 'net-use-lpt1';
                 }
                 
                 $success = ($returnCode === 0);
@@ -370,11 +419,23 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     header('Content-Type: application/json');
     
     try {
-        $input = json_decode(file_get_contents('php://input'), true);
+        $rawInput = file_get_contents('php://input');
+        error_log('=== IMPRIMIR-TERMICA.PHP ===');
+        error_log('Raw input recibido: ' . substr($rawInput, 0, 500));
+        
+        $input = json_decode($rawInput, true);
+        
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new Exception('Error al decodificar JSON: ' . json_last_error_msg());
+        }
+        
+        error_log('Input decodificado: ' . print_r($input, true));
         
         if (!isset($input['tipo'])) {
             throw new Exception('Tipo de impresión no especificado');
         }
+        
+        error_log('Tipo de impresión: ' . $input['tipo']);
         
         $impresora = new ImpresorTermica();
         
@@ -414,11 +475,15 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 break;
                 
             case 'preview':
+                error_log('=== CASO PREVIEW ===');
+                
                 if (!isset($input['datos'])) {
                     throw new Exception('Datos del preview no especificados');
                 }
                 
                 $datos = $input['datos'];
+                error_log('Datos del preview: ' . print_r($datos, true));
+                error_log('Productos: ' . count($datos['productos']));
                 
                 $impresora->imagenLogo();
                 $impresora->saltoLinea();
@@ -434,7 +499,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 $impresora->saltoLinea();
                 $impresora->linea('-', 32);
                 
+                error_log('Llamando tablaProductos...');
                 $impresora->tablaProductos($datos['productos']);
+                error_log('tablaProductos completado');
                 
                 $impresora->saltoLinea();
                 $impresora->texto('TOTAL:', 'right', true, 'wide');
@@ -452,9 +519,12 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 $impresora->cortar();
                 
                 if (isset($input['impresora'])) {
+                    error_log('Imprimiendo en: ' . $input['impresora']);
                     $resultadoImpresion = $impresora->imprimir($input['impresora']);
+                    error_log('Resultado impresión: ' . print_r($resultadoImpresion, true));
                     echo json_encode($resultadoImpresion);
                 } else {
+                    error_log('Generando comandos sin imprimir');
                     echo json_encode([
                         'success' => true,
                         'comandos' => base64_encode($impresora->obtenerComandos()),
@@ -557,9 +627,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         }
         
     } catch (Exception $e) {
+        error_log('❌ ERROR en imprimir-termica.php: ' . $e->getMessage());
+        error_log('Stack trace: ' . $e->getTraceAsString());
         echo json_encode([
             'success' => false,
-            'error' => $e->getMessage()
+            'error' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine()
         ]);
     }
 }

@@ -852,7 +852,7 @@ include 'layout.php';
             // Leer margen de 1kg desde localStorage (configuración)
             const margenesGranel = JSON.parse(localStorage.getItem('margenesGranelDefecto') || '{"100":50,"250":15,"500":10,"1000":40}');
             const margen1kg = margenesGranel['1000'] || 40;
-            precioVenta = precioCompra * (1 + margen1kg / 100); // Base 1kg con margen configurado
+            precioVenta = Math.round(precioCompra * (1 + margen1kg / 100)); // Base 1kg con margen configurado
             calcularPreciosGranel();
         } else {
             configGranel.classList.add('hidden');
@@ -863,10 +863,10 @@ include 'layout.php';
             
             switch(tipo) {
                 case 'anaquel':
-                    precioVenta = precioCompra * (1 + margenAnaquel / 100);
+                    precioVenta = Math.round(precioCompra * (1 + margenAnaquel / 100));
                     break;
                 case 'pieza':
-                    precioVenta = precioCompra * (1 + margenPieza / 100);
+                    precioVenta = Math.round(precioCompra * (1 + margenPieza / 100));
                     break;
             }
         }
@@ -886,17 +886,17 @@ include 'layout.php';
     const precioVenta = parseFloat(document.getElementById('precioVenta').value) || 0;
     
     // Los otros gramajes se calculan proporcionalmente desde precio_venta, aplicando su margen adicional
-    const precio100 = (precioVenta / 1000 * 100) * (1 + margen100/100);
-    const precio250 = (precioVenta / 1000 * 250) * (1 + margen250/100);
-    const precio500 = (precioVenta / 1000 * 500) * (1 + margen500/100);
+    const precio100 = Math.round((precioVenta / 1000 * 100) * (1 + margen100/100));
+    const precio250 = Math.round((precioVenta / 1000 * 250) * (1 + margen250/100));
+    const precio500 = Math.round((precioVenta / 1000 * 500) * (1 + margen500/100));
     
     // El 1kg es el precio_venta directo, SIN margen adicional (ya lo tiene incluido)
-    const precio1kg = precioVenta;
+    const precio1kg = Math.round(precioVenta);
     
-    document.getElementById('precio100').textContent = '$' + precio100.toFixed(2);
-    document.getElementById('precio250').textContent = '$' + precio250.toFixed(2);
-    document.getElementById('precio500').textContent = '$' + precio500.toFixed(2);
-    document.getElementById('precio1kg').textContent = '$' + precio1kg.toFixed(2);
+    document.getElementById('precio100').textContent = '$' + precio100;
+    document.getElementById('precio250').textContent = '$' + precio250;
+    document.getElementById('precio500').textContent = '$' + precio500;
+    document.getElementById('precio1kg').textContent = '$' + precio1kg;
     }
     
     // Event listeners para recalcular precios
@@ -967,15 +967,15 @@ include 'layout.php';
                         // El 1kg es el precio_venta directo (ya tiene su margen incluido)
                         // Los demás gramajes se calculan proporcionalmente y se les aplica su margen adicional
                         if (p.peso_gramos === 1000) {
-                            precioCalculado = precioVenta; // SIN margen adicional
+                            precioCalculado = Math.round(precioVenta); // Redondear precio de 1kg
                         } else {
-                            precioCalculado = (precioVenta / 1000 * p.peso_gramos) * (1 + p.margen/100);
+                            precioCalculado = Math.round((precioVenta / 1000 * p.peso_gramos) * (1 + p.margen/100));
                         }
                         
                         html += `
                             <tr style="page-break-inside: avoid;">
                                 <td class="border-2 border-gray-400 px-2 py-2 text-base font-semibold align-middle">${peso}</td>
-                                <td class="border-2 border-gray-400 px-2 py-2 text-lg font-bold text-green-600 align-middle">$${precioCalculado.toFixed(2)}</td>
+                                <td class="border-2 border-gray-400 px-2 py-2 text-lg font-bold text-green-600 align-middle">$${precioCalculado}</td>
                                 <td class="border-2 border-gray-400 px-1 py-1 align-middle" style="overflow: hidden;">
                                     <div class="flex justify-center items-center" style="width: 100%; overflow: hidden;">
                                         <svg id="${barcodeId}" style="max-width: 100%; height: auto;"></svg>

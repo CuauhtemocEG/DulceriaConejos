@@ -460,7 +460,7 @@ include 'layout.php';
                     <div class="flex gap-3 items-start">
                         <img src="${imagenUrl}" alt="${p.nombre}" 
                             class="w-20 h-20 object-cover rounded-lg border-2 border-purple-100 shadow-sm" 
-                            onerror="this.src='/DulceriaConejos/public/img/productos/default.png'">
+                            onerror="if(this.src!=='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'%3E%3Crect fill=\'%23f3f4f6\' width=\'100\' height=\'100\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%239ca3af\' font-size=\'12\'%3ESin foto%3C/text%3E%3C/svg%3E'){this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'%3E%3Crect fill=\'%23f3f4f6\' width=\'100\' height=\'100\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%239ca3af\' font-size=\'12\'%3ESin foto%3C/text%3E%3C/svg%3E';this.onerror=null;}">
                         <div class="flex-1 min-w-0">
                             <h4 class="font-semibold text-gray-800 truncate mb-1">${p.nombre}</h4>
                             <p class="text-xs text-gray-500 mb-2">
@@ -854,7 +854,7 @@ include 'layout.php';
                 descripcion += ` <span class="text-purple-600">(${item.peso}g)</span>`;
             }
             
-            const imagenUrl = item.imagen_url || '/DulceriaConejos/public/img/productos/default.png';
+            const imagenUrl = item.imagen_url || 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'%3E%3Crect fill=\'%23f3f4f6\' width=\'100\' height=\'100\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%239ca3af\' font-size=\'12\'%3ESin foto%3C/text%3E%3C/svg%3E';
             
             // Botón eliminar - solo visible para dueño
             const btnEliminar = esDueno ? `
@@ -1005,64 +1005,104 @@ include 'layout.php';
             btnProcesar.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin text-lg"></i><span class="text-sm">Imprimiendo...</span>';
             
+            console.log('=== INICIO IMPRESIÓN TÉRMICA ===');
+            
             // Obtener configuración de impresora
+            console.log('📡 Obteniendo configuración de impresora...');
             const configData = await apiRequest('/DulceriaConejos/api/configuracion.php/impresora');
+            console.log('📋 Respuesta config:', configData);
             
             if (!configData.success || !configData.data.habilitada) {
+                console.error('❌ Impresora no configurada o deshabilitada');
                 showNotification('⚠️ Impresora térmica no configurada', 'warning');
                 return;
             }
             
             const nombreImpresora = configData.data.nombre_impresora;
-            console.log('🖨️ Imprimiendo preview en:', nombreImpresora);
+            console.log('🖨️ Nombre de impresora configurada:', nombreImpresora);
             
             // Validar que la impresora esté conectada
-            const validacion = await apiRequest(
-                `/DulceriaConejos/api/validar-impresora.php?accion=validar&nombre=${encodeURIComponent(nombreImpresora)}`
-            );
+            console.log('🔍 Validando conexión de impresora...');
+            const urlValidacion = `/DulceriaConejos/api/validar-impresora.php?accion=validar&nombre=${encodeURIComponent(nombreImpresora)}`;
+            console.log('🔗 URL de validación:', urlValidacion);
+            
+            const validacion = await apiRequest(urlValidacion);
+            console.log('📋 Respuesta validación:', validacion);
             
             if (!validacion.success || !validacion.conectada) {
-                showNotification('❌ Impresora térmica no conectada: ' + nombreImpresora, 'error');
+                console.error('❌ Impresora no conectada');
+                console.log('💡 Sugerencia:', validacion.sugerencia);
+                console.log('📄 Impresoras disponibles:', validacion.impresoras_disponibles);
+                showNotification(
+                    '❌ Impresora térmica no conectada: ' + nombreImpresora + 
+                    (validacion.sugerencia ? '\n' + validacion.sugerencia : ''), 
+                    'error'
+                );
                 return;
             }
             
+            console.log('✅ Impresora validada correctamente');
+            
             // Generar ticket de preview con datos del carrito
+            console.log('📝 Preparando datos del ticket...');
             const totalTexto = document.getElementById('totalVenta').textContent.replace('$', '').replace(',', '');
             const total = parseFloat(totalTexto) || 0;
             const metodoPago = document.getElementById('metodoPago');
             const metodoPagoNombre = metodoPago.options[metodoPago.selectedIndex].text;
             
-            const productosFormateados = carrito.map(item => ({
-                nombre: item.nombre,
-                cantidad: item.cantidad,
-                subtotal: item.subtotal,
-                peso_gramos: item.peso || null
-            }));
+            console.log('💰 Total:', total);
+            console.log('💳 Método de pago:', metodoPagoNombre);
+            console.log('🛒 Items en carrito:', carrito.length);
             
-            // Enviar a imprimir preview
-            const printData = await apiRequest('/DulceriaConejos/api/imprimir-termica.php', {
-                method: 'POST',
-                body: JSON.stringify({
-                    tipo: 'preview',
-                    impresora: nombreImpresora,
-                    datos: {
-                        productos: productosFormateados,
-                        total: total,
-                        metodo_pago: metodoPagoNombre,
-                        fecha: new Date().toISOString()
-                    }
-                })
+            const productosFormateados = carrito.map(item => {
+                // Calcular subtotal: precio_unitario * cantidad
+                const subtotal = item.precio_unitario * item.cantidad;
+                
+                return {
+                    nombre: item.nombre,
+                    cantidad: item.cantidad,
+                    subtotal: subtotal,
+                    peso_gramos: item.peso || null
+                };
             });
             
+            console.log('📦 Productos formateados:', productosFormateados);
+            
+            const datosImpresion = {
+                tipo: 'preview',
+                impresora: nombreImpresora,
+                datos: {
+                    productos: productosFormateados,
+                    total: total,
+                    metodo_pago: metodoPagoNombre,
+                    fecha: new Date().toISOString()
+                }
+            };
+            
+            console.log('📄 Datos completos para impresión:', datosImpresion);
+            
+            // Enviar a imprimir preview
+            console.log('🖨️ Enviando a imprimir...');
+            const printData = await apiRequest('/DulceriaConejos/api/imprimir-termica.php', {
+                method: 'POST',
+                body: JSON.stringify(datosImpresion)
+            });
+            
+            console.log('📋 Respuesta de impresión:', printData);
+            
             if (printData.success) {
+                console.log('✅ Ticket impreso exitosamente');
                 showNotification('✅ Ticket de preview impreso. Procesa la venta cuando estés listo.', 'success');
             } else {
-                showNotification('❌ Error al imprimir: ' + (printData.error || printData.mensaje), 'error');
+                console.error('❌ Error al imprimir:', printData.error || printData.mensaje);
+                showNotification('❌ Error al imprimir: ' + (printData.error || printData.mensaje || 'Error desconocido'), 'error');
             }
             
+            console.log('=== FIN IMPRESIÓN TÉRMICA ===');
+            
         } catch (error) {
-            console.error('Error al imprimir preview:', error);
-            showNotification('❌ Error al imprimir ticket de preview', 'error');
+            console.error('💥 Error en procesarVentaConTermica:', error);
+            showNotification('❌ Error al imprimir ticket de preview: ' + error.message, 'error');
         } finally {
             btn.disabled = false;
             btnProcesar.disabled = false;
